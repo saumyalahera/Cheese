@@ -16,6 +16,7 @@
 		41F44BA326B157A80011740B /* CheeseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BA226B157A80011740B /* CheeseTests.swift */; };
 		41F44BAD26B157A80011740B /* CheeseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BAC26B157A80011740B /* CheeseUITests.swift */; };
 		41F44BBA26B1594E0011740B /* SLPocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BB926B1594E0011740B /* SLPocket.swift */; };
+		41F44BBC26B15E4E0011740B /* SLTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BBB26B15E4E0011740B /* SLTools.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		41F44BA826B157A80011740B /* CheeseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CheeseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		41F44BAC26B157A80011740B /* CheeseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheeseUITests.swift; sourceTree = "<group>"; };
 		41F44BB926B1594E0011740B /* SLPocket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLPocket.swift; sourceTree = "<group>"; };
+		41F44BBB26B15E4E0011740B /* SLTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLTools.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 				41F44B9626B157A80011740B /* LaunchScreen.storyboard */,
 				41F44B9926B157A80011740B /* Info.plist */,
 				41F44BB926B1594E0011740B /* SLPocket.swift */,
+				41F44BBB26B15E4E0011740B /* SLTools.swift */,
 			);
 			path = Cheese;
 			sourceTree = "<group>";
@@ -258,6 +261,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41F44BBC26B15E4E0011740B /* SLTools.swift in Sources */,
 				41F44B9026B157A70011740B /* ViewController.swift in Sources */,
 				41F44B8C26B157A70011740B /* AppDelegate.swift in Sources */,
 				41F44BBA26B1594E0011740B /* SLPocket.swift in Sources */,
