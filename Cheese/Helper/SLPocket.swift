@@ -60,10 +60,9 @@ extension SLPocket {
 }
 
 
-//MARK:- Metal Device Functions
+//MARK: - Metal Device Functions - PF
 /**This extension is to work with metal device object*/
 extension SLPocket {
-    
     /**Get a GPU instance. It is a class method and do not need to create
         - Returns: Metal Device*/
     class func createDevice() -> MTLDevice?{
@@ -72,7 +71,18 @@ extension SLPocket {
     }
 }
 
-//MARK: - Render Pipeline Descriptor
+//MARK: - Metal Command Queue Functions - PF
+/**This extension is to work with Metal Command Queue*/
+extension SLPocket {
+    /**Creates command Queue and returns one
+        - Returns: Metal Command Queue*/
+    class func createCommandQueue(device: MTLDevice?) -> MTLCommandQueue?{
+        //Returns a queue
+        return device?.makeCommandQueue()
+    }
+}
+
+//MARK: - Render Pipeline Descriptor - PF
 /**This extension helps create a render pipeline descriptor needed for render pipeline state*/
 extension SLPocket {
     
@@ -82,7 +92,7 @@ extension SLPocket {
             - vertexFunction:   It attaches vertex buffer required for Pipeline state
             - fragmentFunction: It attaches fragment buffer required for Pipeline state
         - Returns: A render pipeline descriptor*/
-    class func createRenderPipelineDescriptor(pixelFormat: MTLPixelFormat = MTLPixelFormat.bgra8Unorm, vertexFunction:MTLFunction?, fragmentFunction:MTLFunction?) -> MTLRenderPipelineDescriptor{
+    class func createRenderPipelineDescriptor(pixelFormat: MTLPixelFormat = MTLPixelFormat.bgra8Unorm, vertexFunction:MTLFunction?, fragmentFunction:MTLFunction?) -> MTLRenderPipelineDescriptor?{
         
         //Create render pipeline descriptor
         let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -106,7 +116,7 @@ extension SLPocket {
             - vertexFunctionName:   It attaches vertex buffer required for Pipeline state
             - fragmentFunctionName: It attaches fragment buffer required for Pipeline state
         - Returns: A render pipeline descriptor*/
-    class func createRenderPipelineDescriptor(device: MTLDevice?, pixelFormat: MTLPixelFormat = MTLPixelFormat.bgra8Unorm, vertexFunctionName:String, fragmentFunctionName:String) -> MTLRenderPipelineDescriptor{
+    class func createRenderPipelineDescriptor(device: MTLDevice?, pixelFormat: MTLPixelFormat = MTLPixelFormat.bgra8Unorm, vertexFunctionName:String, fragmentFunctionName:String) -> MTLRenderPipelineDescriptor?{
         
         //Create render pipeline descriptor
         let renderPipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -131,7 +141,7 @@ extension SLPocket {
     }
 }
 
-//MARK: - Render Pipeline
+//MARK: - Render Pipeline - PF
 /**This extension helps create a render pipeline state*/
 extension SLPocket {
     
@@ -160,7 +170,7 @@ extension SLPocket {
     
 }
 
-//MARK:- Metal Buffer Functions
+//MARK: - Metal Buffer Functions - PF
 /**This extension is to work with metal buffer object*/
 extension SLPocket {
     
@@ -174,14 +184,11 @@ extension SLPocket {
         
         //Return a simple function
         return device?.makeBuffer(bytes: rawData, length: length, options: options)
-        
     }
-    
-        
     
 }
 
-//MARK: - Metal Library Functions
+//MARK: - Metal Library Functions - PF
 /**This extension has shader library functions required to attach to a render pipeline*/
 extension SLPocket {
     
@@ -191,12 +198,10 @@ extension SLPocket {
             - name:   It is the name of the function to fetch from a Metal file
         - Returns:    It returns the metal function of the name*/
     class func getMetalFunction(device: MTLDevice?, name: String) -> MTLFunction? {
-        
-        //Create a default library for getting functions
-        let defaultLibrary = device?.makeDefaultLibrary()
-        
-        //Return a function
-        return defaultLibrary?.makeFunction(name: name)
+        guard let defaultLibrary = device?.makeDefaultLibrary() else {
+            return nil
+        }
+        return defaultLibrary.makeFunction(name: name)
     }
     
     /**It returns a MTLFunction from a shader file. This function is indepedent of the metal device object in the class. It doesnt need other objects, but the function name
@@ -216,7 +221,7 @@ extension SLPocket {
     }
 }
 
-//MARK: - Metal Color Functions
+//MARK: - Metal Color Functions - PF
 /**This extension has metal color functions*/
 extension SLPocket {
     
@@ -224,24 +229,30 @@ extension SLPocket {
         - Parameters:
             - color - This is a UIColor that is supposed to be converted
         - Returns: MTLClearColor that is equivalent UIColor values or nil */
-    class func colorToMTLClearColor(color: UIColor) -> MTLClearColor{
-        //Get color components
-        let components = color.cgColor.components!
+    class func colorToMTLClearColor(color:UIColor?) -> MTLClearColor? {
         
+        //Get color components
+        guard let components = color?.cgColor.components else {
+            return nil
+        }
         /*This happens with colors like black and white where there are only two inputs. rgb have same value and alpha.*/
         if(components.count < 4) {
             return MTLClearColor(red: Double(components[0]), green: Double(components[0]), blue: Double(components[0]), alpha: Double(components[1]))
         }
-        
         //Map them to the right components
         return MTLClearColor(red: Double(components[0]), green: Double(components[1]), blue: Double(components[2]), alpha: Double(components[3]))
     }
     
-    class func colorToSimdComponents(color:UIColor) -> simd_float4 {
+    /**This function comverts UIColor to MTLClearColor simd_float4 components
+        - Parameters:
+            - color - This is a UIColor that is supposed to be converted
+        - Returns: simd_float4 that is equivalent UIColor values or nil */
+    class func colorToSIMDComponents(color:UIColor?) -> simd_float4? {
         
         //Get color components
-        let components = color.cgColor.components!
-
+        guard let components = color?.cgColor.components else {
+            return nil
+        }
         /*This happens with colors like black and white where there are only two inputs. rgb have same value and alpha.*/
         if(components.count < 4) {
             return simd_float4(Float(components[0]), Float(components[0]), Float(components[0]), Float(components[1]))
@@ -249,24 +260,39 @@ extension SLPocket {
             return simd_float4(Float(components[0]), Float(components[1]), Float(components[2]), Float(components[3]))
         }
     }
-    
-//MARK: - Useless method
-    class func colorComponents(color:UIColor) -> simd_float4 {
-        
-        //Get color components
-        let components = color.cgColor.components!
-
-        /*This happens with colors like black and white where there are only two inputs. rgb have same value and alpha.*/
-        if(components.count < 4) {
-            return simd_float4(Float(components[0]), Float(components[0]), Float(components[0]), Float(components[1]))
-        }else {
-            return simd_float4(Float(components[0]), Float(components[1]), Float(components[2]), Float(components[3]))
-        }
-    }
-    
 }
 
+//MARK: - Normalise Coordinates - PF
+/**This extension has coordinates normalise functions*/
 extension SLPocket {
+    
+    /**This function normalises a coordinate
+        - Parameters:
+            - x - x coordinate to be normalised
+            - frame: frame which will be used for converting coordinates
+        - Returns: returns x normalised coordinate*/
+    /*Create a class that will normaliseX coordinates*/
+    class func normaliseX(x: Float, frame:CGRect?) -> Float?{
+        guard let frame = frame else {
+            return nil
+        }
+        let xk:Float = 1/Float(frame.width)
+        return ((2*x)*xk)-1
+    }
+    
+    /**This function normalises a coordinate
+        - Parameters:
+            - y - y coordinate to be normalised
+            - frame: frame which will be used for converting coordinates
+        - Returns: returns xynormalised coordinate*/
+    /*Create a class that will normaliseY coordinates*/
+    class func normaliseY(y:Float, frame:CGRect?) -> Float?{
+        guard let frame = frame else {
+            return nil
+        }
+        let yk:Float = 1/Float(frame.height)
+        return ((-2*y)*yk)+1
+    }
     
     /**This function normalises a coordinate
         - Parameters:
@@ -292,6 +318,8 @@ extension SLPocket {
     
 }
 
+//MARK: - Metal Radians Functions - PF
+/**This extension has metal radians functions*/
 extension SLPocket {
     
     /**It is used to cnovert degrees to radians. A lot of functions need parameters in radians*/
