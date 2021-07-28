@@ -115,10 +115,10 @@ extension SLPocket {
         renderPipelineDescriptor.colorAttachments[0].pixelFormat = pixelFormat
         
         //Get vertex function
-        let vertexFunction = Pocket.getMetalFunction(device: device, name: vertexFunctionName)
+        let vertexFunction = SLPocket.getMetalFunction(device: device, name: vertexFunctionName)
         
         //Get Fragment function
-        let fragmentFunction = Pocket.getMetalFunction(device: device, name: fragmentFunctionName)
+        let fragmentFunction = SLPocket.getMetalFunction(device: device, name: fragmentFunctionName)
         
         //Set vertex function
         renderPipelineDescriptor.vertexFunction = vertexFunction
@@ -266,7 +266,7 @@ extension SLPocket {
     
 }
 
-extension Pocket {
+extension SLPocket {
     
     /**This function normalises a coordinate
         - Parameters:
@@ -292,7 +292,7 @@ extension Pocket {
     
 }
 
-extension Pocket {
+extension SLPocket {
     
     /**It is used to cnovert degrees to radians. A lot of functions need parameters in radians*/
     class func degreesToRadians(_ degrees: Float)->Float {
