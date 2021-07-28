@@ -89,6 +89,8 @@ class SLCircle:SLShape {
         
         let nx = SLPocket.normaliseX(x: x, frame: self.superViewFrame!)
         let ny = SLPocket.normaliseY(y: y, frame: self.superViewFrame!)
+        //let rx = SLPocket.normaliseX(x: radius, frame: self.superViewFrame!)
+        //let ry = SLPocket.normaliseY(y: radius, frame: self.superViewFrame!)
         
         let origin = simd_float2(nx, ny)
         
@@ -96,11 +98,14 @@ class SLCircle:SLShape {
             
             var position : simd_float2 = [(cos(SLPocket.degreesToRadians(Float(Float(i))))*radius)+origin.x,(sin(SLPocket.degreesToRadians(Float(Float(i))))*radius)+origin.y]
             
+            //position  = [(cos(SLPocket.degreesToRadians(Float(Float(i))))*rx)+origin.x,(sin(SLPocket.degreesToRadians(Float(Float(i))))*ry)+origin.y]
+            
             var x_x = cos(SLPocket.degreesToRadians(Float(Float(i))))
             var y_y = sin(SLPocket.degreesToRadians(Float(Float(i)))) * aspectRatio
             
             x_x = (x_x * radius)+origin.x
             y_y = (y_y * radius)+origin.y
+            
             
             position.x = x_x
             position.y = y_y

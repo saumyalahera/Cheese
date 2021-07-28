@@ -29,6 +29,13 @@ vertex VertexOut vertexShader(const constant vector_float2 *vertexArray [[buffer
 }
 
 fragment vector_float4 fragmentShader(VertexOut interpolated [[stage_in]]){
+    
+    /*float d = distance(interpolated.position.xyz, float3(0,0,0));
+      float radius = 0.2;
+      float soften = 1;
+      float final = (1 - d / radius) / soften;
+      return float4(final, 0, 0, final);*/
+    
     return interpolated.color;
 }
 
