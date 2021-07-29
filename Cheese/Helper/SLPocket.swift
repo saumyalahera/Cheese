@@ -327,6 +327,16 @@ extension SLPocket {
         return (Float.pi*degrees)/180
     }
     
+    /**It is used to convert orthographic projection matrix**/
+    class func makeOrthographicMatrixc(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float) -> simd_float4x4 {
+        return simd_float4x4(
+            [ 2 / (right - left), 0, 0, 0],
+            [0, 2 / (top - bottom), 0, 0],
+            [0, 0, 1 / (far - near), 0],
+            [(left + right) / (left - right), (top + bottom) / (bottom - top), near / (near - far), 1]
+        )
+    }
+    
 }
 
 

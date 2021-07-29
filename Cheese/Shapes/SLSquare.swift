@@ -135,13 +135,8 @@ class SLSquare: SLShape {
         self.vertexBuffer = SLTools.device.makeBuffer(bytes: self.vertices, length: MemoryLayout<simd_float2>.stride*self.vertices.count, options: [])
     //Init index buffer
         self.indexBuffer = SLTools.device.makeBuffer(bytes: self.indices, length: MemoryLayout<UInt16>.size*self.indices.count, options: [])
-    //Only init that buffer if users want to init color for each vertex
-        //self.vertexBuffer = Tools.device.makeBuffer(bytes: self.colorVertices, length: MemoryLayout<ColorVertex>.stride*self.colorVertices.count, options: [])
-    //Set texture
-        //self.setTexture(imageName: "Senor2")
-    //Check if this code is executed
-        //Init orthographic Matrix
-        self.uniforms = SLUniforms(orthographicModelMatrix: self.makeOrthographicMatrixc(left: 0, right: Float(superViewFrame!.width), bottom: Float(superViewFrame!.height), top: 0, near: -1, far: 1))
+    //Init orthographic Matrix
+        //self.uniforms = SLUniforms(SLPocket.orthographicModelMatrix: self.makeOrthographicMatrixc(left: 0, right: Float(superViewFrame!.width), bottom: Float(superViewFrame!.height), top: 0, near: -1, far: 1))
         
         
     }
@@ -155,20 +150,11 @@ class SLSquare: SLShape {
         //Add a render command encoder
         renderCommandEncoder.setVertexBytes(&self.shapeColorConstant, length: MemoryLayout<SLShapeColorConstant>.stride, index: 1)
         
-        renderCommandEncoder.setVertexBytes(&self.uniforms, length: MemoryLayout<SLUniforms>.stride, index: 2)
+        //renderCommandEncoder.setVertexBytes(&self.uniforms, length: MemoryLayout<SLUniforms>.stride, index: 2)
+        renderCommandEncoder.setVertexBytes(&canvasCoordinates, length: MemoryLayout<SLCanvasDimensions>.stride, index: 2)
         
         //Render with indexed vertices
         renderCommandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: self.indices.count, indexType: .uint16, indexBuffer: self.indexBuffer, indexBufferOffset: 0)
     }
-    
-    func makeOrthographicMatrixc(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float) -> simd_float4x4 {
-        return simd_float4x4(
-            [ 2 / (right - left), 0, 0, 0],
-            [0, 2 / (top - bottom), 0, 0],
-            [0, 0, 1 / (far - near), 0],
-            [(left + right) / (left - right), (top + bottom) / (bottom - top), near / (near - far), 1]
-        )
-    }
-    
-    
+
 }
