@@ -19,4 +19,8 @@ public class SLGameSetings: NSObject {
     public static var columnColor = UIColor.white
    
     public static var columnHighlightColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)  //224
+    
+    public static var cursorColor = UIColor.white
+    
+    public static var cursorHighlightColor = UIColor.systemBlue
 }

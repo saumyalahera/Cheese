@@ -7,37 +7,41 @@
 
 import UIKit
 
-var canvasCoordinates = SLCanvasDimensions(width: 0, height: 0)
-
 class ViewController: UIViewController {
+
+//MARK: - Cursor Properties
+    ///This is used when a user drags or clicks on rows
+    var cursor:SLCursor?
+    
+    ///These are used for cursor and highlights
+    var canvasBlocks = [SLShape?]()
+    
 
     ///This is where the main rendering is done
     var canvas:SLCanvas!
     
-    ///This is used when a user drags or clicks on rows
-    var cursor:SLCursor?
+    ///Canvas info will be used to render subviews
+    var canvasInfo = SLCanvasInfo(centerX: 0, centerY: 0, width: 0, height: 0)
     
 //MARK: - View Controller Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //Get command Queue
+    //Get command Queue and device
         guard let device = SLPocket.createDevice(), let queue = SLPocket.createCommandQueue(device: device) else {
             return
         }
         SLTools.setupMetalComponents(device: device, queue: queue)
         
-        
-    //Create screen dimensions info
-        canvasCoordinates = SLCanvasDimensions(width: Float(self.view.frame.width), height: Float(self.view.frame.height))
-        
-        //Create canvas and add circles to it
-        //Create a paper view
+    //Create canvas and add objects on it
         canvas = SLCanvas(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         canvas.color = UIColor.white
         self.view.addSubview(canvas)
         
-    //Create canvas blocks
+    //Update canvas information
+        self.canvasInfo = SLCanvasInfo(centerX: Float(self.view.center.x), centerY: Float(self.view.center.y), width: Float(self.view.frame.width), height: Float(self.view.frame.height))
+        
+    //Create canvas blocks, they are used to highlight columns and guides player to drop coins
         self.createCanvasBlocks()
         
     //Create a grid
@@ -47,6 +51,10 @@ class ViewController: UIViewController {
         let boardWidth = (7*containerDimension)+(6*padding)
         var x = Float(self.view.center.x) - (boardWidth/2)
         var y = Float(self.view.center.y) - (boardHeight/2)
+        
+        self.cursor = SLCursor(x: Float(self.view.center.x), y: y-15, radius: 20)
+        cursor!.color = .white
+        canvas.addNode(shape: cursor!)
         
         for _ in 0..<6 {
             x=Float(self.view.center.x) - (boardWidth/2)
@@ -58,32 +66,27 @@ class ViewController: UIViewController {
             }
             y+=(padding+containerDimension)
         }
-        
-        let t1 = SLCursor(x: 200, y: 400, radius: 20)
-        t1.color = .systemPink
-        canvas.addNode(shape: t1)
     }
     
     
-    var canvasBlocks = [SLShape?]()
+    
     var outerPadding:Float = 5
     var innerPadding:Float = 3
     var rows:Float = 6
     var cols:Float = 7
     var columnWidth:Float = 0 //Used to check highlights
     var columnHeight:Float = 0  //Used to check highlights
-    var blockDimension:Float = 0
-    var screenWidth:Float = 0
-    var lastShape:SLShape?
-    var lastNumber = 0
+    //var blockDimension:Float = 0
+    var columnBlocksCenterPositions = [Float]()
     
+   
     func createCanvasBlocks() {
         
-        self.screenWidth = Float(self.view.frame.width)
+        //self.screenWidth = Float(self.view.frame.width)
     //Calculate block width
-        columnWidth = self.screenWidth - (2*outerPadding)
+        columnWidth = self.canvasInfo.width - (2*outerPadding)
     //Get block width
-        blockDimension = columnWidth - ((cols-1)*innerPadding)
+        var blockDimension = columnWidth - ((cols-1)*innerPadding)
         blockDimension/=cols
     //Get block height
         columnHeight = (blockDimension*rows) + ((rows-1)*innerPadding)
@@ -91,99 +94,77 @@ class ViewController: UIViewController {
         columnWidth/=cols
     //Coordinates
         var x = outerPadding
-        let y:Float = (Float(self.view.center.y))-(columnHeight/2)
+        let y = (self.canvasInfo.centerY)-(columnHeight/2)
     //Setup blocks
         for _ in 0..<Int(cols) {
             let s1 = SLSquare(x: x, y: y, width: columnWidth, height: columnHeight)
             canvas.addNode(shape: s1)
+            self.columnBlocksCenterPositions.append(x+(columnWidth/2))
             self.canvasBlocks.append(s1)
             x+=columnWidth
         }
     }
 }
 
+
+/** This extension is used to keep track of cursor and it */
 extension ViewController {
+    
+/**This function returns **/
+    func getCursorCenterPositionCounter(x: Float, y:Float) -> Int? {
+    //To check if the player is dragging in the zone
+        let halfHeight = self.columnHeight/2
+        if(y <= (self.canvasInfo.centerY + halfHeight) && y >= (self.canvasInfo.centerY - halfHeight)) {
+            
+            let counter = Int(x/self.columnWidth)
+            
+            guard counter < Int(cols) else{
+                return nil
+            }
+            return counter
+        }
+        return nil
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        /*guard let location = touches.first?.location(in: self.view) else {
+        guard let cursor = self.cursor else {
             return
         }
         
-        if(location.y <= (self.view.center.y+(CGFloat(self.columnHeight/2)))) {
-            let number = Int(Float(location.x)/self.columnWidth)
-            guard number < Int(cols) else{
-                return
-            }
-            guard let shape = self.canvasBlocks[number] else{
-                return
-            }
-            lastShape = shape
-            shape.color = SLGameSetings.columnHighlightColor
-        }*/
+        guard let location = touches.first?.location(in: self.view) else {
+            return
+        }
+
+        guard let counter = self.getCursorCenterPositionCounter(x: Float(location.x), y: Float(location.y)) else {
+            return
+        }
+        
+        cursor.color = SLGameSetings.cursorHighlightColor
+        cursor.x = self.columnBlocksCenterPositions[counter] //shape.x+(self.columnWidth/2)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("ENDDD")
-        /*guard let location = touches.first?.location(in: self.view) else {
+        guard let cursor = self.cursor else {
             return
         }
-        if(location.y <= (self.view.center.y+(CGFloat(self.columnHeight/2)))) {
-            let number = Int(Float(location.x)/self.columnWidth)
-            
-            guard number < Int(cols) else{
-                return
-            }
-            
-            guard let shape = self.canvasBlocks[number] else{
-                return
-            }
-            UIView.animate(withDuration: 0, animations: {
-                shape.color = SLGameSetings.columnHighlightColor
-            }, completion: {_ in
-                shape.color = SLGameSetings.columnColor
-            })
-        }*/
-        /*guard let shape = lastShape else {
-            return
-        }
-        
-        shape.color = SLGameSetings.columnColor*/
+        cursor.color = SLGameSetings.cursorColor
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("Dragging....")
-        /*guard let location = touches.first?.location(in: self.view) else {
+        guard let cursor = self.cursor else {
             return
         }
-        if(location.y <= (self.view.center.y+(CGFloat(self.columnHeight/2)))) {
-            let number = Int(Float(location.x)/self.columnWidth)
-            guard number < Int(cols) else{
-                return
-            }
-            guard let shape = self.canvasBlocks[number] else{
-                return
-            }
-            
-            UIView.animate(withDuration: 0, animations: {
-                if(self.lastNumber != number) {
-                    //lastShape?.color = SLGameSetings.columnColor
-                }
-                shape.color = SLGameSetings.columnHighlightColor
-                
-                guard let lastshape = self.lastShape else {
-                    return
-                }
-                
-                lastshape.color = SLGameSetings.columnColor
-                self.lastShape = shape
-                
-            }, completion: {_ in
-                
-            })
-        }*/
         
-        //Update cursor position bro
-            
+        guard let location = touches.first?.location(in: self.view) else {
+            return
+        }
+
+        guard let counter = self.getCursorCenterPositionCounter(x: Float(location.x), y: Float(location.y)) else {
+            return
+        }
+        
+        cursor.color = SLGameSetings.cursorHighlightColor
+        cursor.x = self.columnBlocksCenterPositions[counter]
     }
 }
 

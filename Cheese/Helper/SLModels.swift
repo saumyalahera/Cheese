@@ -18,7 +18,9 @@ struct SLUniforms {
     var orthographicModelMatrix:simd_float4x4
 }
 
-struct SLCanvasDimensions {
+struct SLCanvasInfo {
+    var centerX:Float
+    var centerY:Float
     var width:Float
     var height:Float
 }
