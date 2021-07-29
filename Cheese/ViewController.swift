@@ -11,8 +11,13 @@ var canvasCoordinates = SLCanvasDimensions(width: 0, height: 0)
 
 class ViewController: UIViewController {
 
+    ///This is where the main rendering is done
     var canvas:SLCanvas!
     
+    ///This is used when a user drags or clicks on rows
+    var cursor:SLCursor?
+    
+//MARK: - View Controller Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -53,6 +58,10 @@ class ViewController: UIViewController {
             }
             y+=(padding+containerDimension)
         }
+        
+        let t1 = SLCursor(x: 200, y: 400, radius: 20)
+        t1.color = .systemPink
+        canvas.addNode(shape: t1)
     }
     
     
@@ -96,7 +105,7 @@ class ViewController: UIViewController {
 extension ViewController {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: self.view) else {
+        /*guard let location = touches.first?.location(in: self.view) else {
             return
         }
         
@@ -110,7 +119,7 @@ extension ViewController {
             }
             lastShape = shape
             shape.color = SLGameSetings.columnHighlightColor
-        }
+        }*/
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -134,16 +143,16 @@ extension ViewController {
                 shape.color = SLGameSetings.columnColor
             })
         }*/
-        guard let shape = lastShape else {
+        /*guard let shape = lastShape else {
             return
         }
         
-        shape.color = SLGameSetings.columnColor
+        shape.color = SLGameSetings.columnColor*/
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("Dragging....")
-        guard let location = touches.first?.location(in: self.view) else {
+        /*guard let location = touches.first?.location(in: self.view) else {
             return
         }
         if(location.y <= (self.view.center.y+(CGFloat(self.columnHeight/2)))) {
@@ -171,7 +180,10 @@ extension ViewController {
             }, completion: {_ in
                 
             })
-        }
+        }*/
+        
+        //Update cursor position bro
+            
     }
 }
 

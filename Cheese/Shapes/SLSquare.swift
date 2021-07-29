@@ -20,25 +20,25 @@ class SLSquare: SLShape {
 //MARK: - Properties
     var x: Float = 0 {
         didSet {
-            self.processCoordinates(frame: superViewFrame)
+            self.processCoordinates()
         }
     }
     
     var y: Float = 0 {
         didSet {
-            self.processCoordinates(frame: superViewFrame)
+            self.processCoordinates()
         }
     }
     
     var width: Float = 0 {
         didSet {
-            self.processCoordinates(frame: superViewFrame)
+            self.processCoordinates()
         }
     }
     
     var height: Float = 0 {
         didSet {
-            self.processCoordinates(frame: superViewFrame)
+            self.processCoordinates()
         }
     }
     
@@ -65,12 +65,12 @@ class SLSquare: SLShape {
     }
     
 //MARK: - Personal Methods
-    private func processCoordinates(frame:CGRect?) {
+    private func processCoordinates() {
        
         print("process coordinates")
         
         //Check if the frame
-        guard let frame = frame else {
+        guard let frame = self.superViewFrame else {
             return
         }
         
@@ -114,7 +114,7 @@ class SLSquare: SLShape {
     //This is required when there are some changes in the coordinates
         self.superViewFrame = frame
     //Process coordinates
-        self.processCoordinates(frame: frame)
+        self.processCoordinates()
     //Init vertex Buffer
         self.vertexBuffer = SLTools.device.makeBuffer(bytes: self.vertices, length: MemoryLayout<simd_float2>.stride*self.vertices.count, options: [])
     //Init index buffer
