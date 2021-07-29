@@ -48,9 +48,7 @@ class SLSquare: SLShape {
     ///Specify index
     var indices:[UInt16] = [0,1,2,2,3,0]
     
-    
 
-    
 //MARK: - Init Methods
     
     /*---------- Init Methods ----------*/
