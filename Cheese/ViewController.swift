@@ -47,23 +47,23 @@ class ViewController: UIViewController {
         */
         
         
-        /*let padding:Float = 5
+        let padding:Float = 5
         var containerDimension:Float = 50
         let boardHeight = (6*containerDimension)+(5*padding)
         let boardWidth = (7*containerDimension)+(6*padding)
-        var x = Float(center.x) - (boardWidth/2)
-        var y = Float(center.y) - (boardHeight/2)
+        var x = Float(self.view.center.x) - (boardWidth/2)
+        var y = Float(self.view.center.y) - (boardHeight/2)
         
         for _ in 0..<6 {
-            x=Float(center.x) - (boardWidth/2)
+            x=Float(self.view.center.x) - (boardWidth/2)
             for _ in 0..<7 {
                 let s1 = SLSquare(x: x, y: y, width: containerDimension, height: containerDimension)
-                s1.color = SLGameSetings.canvasBlockHighlightColor
+                s1.color = SLGameSetings.columnHighlightColor
                 canvas.addNode(shape: s1)
                 x+=(padding+containerDimension)
             }
             y+=(padding+containerDimension)
-        }*/
+        }
         
         /*
         //Create a circle - Super buggy
@@ -97,7 +97,8 @@ class ViewController: UIViewController {
     var columnHeight:Float = 0  //Used to check highlights
     var blockDimension:Float = 0
     var screenWidth:Float = 0
-    var lastNumber:Int = 0
+    var lastShape:SLShape?
+    var lastNumber = 0
     
     func createCanvasBlocks() {
         
@@ -126,9 +127,27 @@ class ViewController: UIViewController {
 
 extension ViewController {
 
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self.view) else {
+            return
+        }
+        
+        if(location.y <= (self.view.center.y+(CGFloat(self.columnHeight/2)))) {
+            let number = Int(Float(location.x)/self.columnWidth)
+            guard number < Int(cols) else{
+                return
+            }
+            guard let shape = self.canvasBlocks[number] else{
+                return
+            }
+            lastShape = shape
+            shape.color = SLGameSetings.columnHighlightColor
+        }
+    }
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         print("ENDDD")
-        guard let location = touches.first?.location(in: self.view) else {
+        /*guard let location = touches.first?.location(in: self.view) else {
             return
         }
         if(location.y <= (self.view.center.y+(CGFloat(self.columnHeight/2)))) {
@@ -146,30 +165,41 @@ extension ViewController {
             }, completion: {_ in
                 shape.color = SLGameSetings.columnColor
             })
+        }*/
+        guard let shape = lastShape else {
+            return
         }
+        
+        shape.color = SLGameSetings.columnColor
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print("PRESS")
+        print("Dragging....")
         guard let location = touches.first?.location(in: self.view) else {
             return
         }
-        print(location)
         if(location.y <= (self.view.center.y+(CGFloat(self.columnHeight/2)))) {
             let number = Int(Float(location.x)/self.columnWidth)
-            print("Number: \(number)")
             guard number < Int(cols) else{
-                
                 return
             }
             guard let shape = self.canvasBlocks[number] else{
                 return
             }
+            
             UIView.animate(withDuration: 0, animations: {
                 if(self.lastNumber != number) {
-                    //shape.color = SLGameSetings.columnColor
+                    //lastShape?.color = SLGameSetings.columnColor
                 }
                 shape.color = SLGameSetings.columnHighlightColor
+                
+                guard let lastshape = self.lastShape else {
+                    return
+                }
+                
+                lastshape.color = SLGameSetings.columnColor
+                self.lastShape = shape
+                
             }, completion: {_ in
                 
             })

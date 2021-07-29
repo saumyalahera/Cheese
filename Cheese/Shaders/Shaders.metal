@@ -40,6 +40,11 @@ fragment vector_float4 fragmentShader(SLVertexOut interpolated [[stage_in]]){
       float final = (1 - d / radius) / soften;
       return float4(final, 0, 0, final);*/
     
-    return interpolated.color;
+    float dist = length(interpolated.position.xy - float2(0.5));
+    float4 out_color = interpolated.color;
+    out_color.a = 1.0 - smoothstep(0.45, 0.5, dist);
+    return out_color; //half4(out_color.r, out_color.g, out_color.b,1);
+    
+    //return interpolated.color;
 }
 

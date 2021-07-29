@@ -64,7 +64,7 @@ class SLSquare: SLShape {
         self.width = width
         
         //Default color is white
-        self.color = .red
+        //self.color = .red
 
     }
     

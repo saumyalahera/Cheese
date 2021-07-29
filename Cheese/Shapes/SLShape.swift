@@ -23,7 +23,7 @@ class SLShape: SLNode {
     var vertexBuffer:MTLBuffer!
     
     ///This is the default color
-    var shapeColorConstant = SLShapeColorConstant(color: simd_float4(1,0,0,1))
+    var shapeColorConstant = SLShapeColorConstant(color: simd_float4(1,1,1,1))
     
     ///Can change color with a simple UIColor instance
     var color:UIColor? {
