@@ -40,7 +40,10 @@ class ViewController: UIViewController {
     var canvasInfo = SLCanvasInfo(centerX: 0, centerY: 0, width: 0, height: 0)
     
     ///Coin and coordinates
-    var coins = [[SLCircle]]()
+    var coins:[[SLCircle?]] = Array(repeating: Array(repeating: nil, count: 7), count: 6)
+    
+    ///This is to keep track of a new coin
+    var currentCoinsColumnCounters:[Int] = Array(repeating: 0, count: 7)
     
 //MARK: - View Controller Methods
     override func viewDidLoad() {
@@ -64,34 +67,40 @@ class ViewController: UIViewController {
         self.createCanvasBlocks()
         
     //Create a grid
-        //let padding:Float = 5
-        //var containerDimension:Float = 50
-        /*let boardHeight = (6*containerDimension)+(5*padding)
-        let boardWidth = (7*containerDimension)+(6*padding)
-        var x = Float(self.view.center.x) - (boardWidth/2)
-        var y = Float(self.view.center.y) - (boardHeight/2)*/
+        let x = outerPadding
+        var y = (self.canvasInfo.centerY)+(columnHeight/2)
         
-        var x = outerPadding
-        var y = (self.canvasInfo.centerY)-(columnHeight/2)
+    //Add All the coins holder
+        self.setupCoins(x: x, y: y)
         
     //Create a cursor that be used to guide which column the user has pressed
+        y = (self.canvasInfo.centerY)-(columnHeight/2)
+        
         self.cursor = SLCursor(x: self.canvasInfo.centerX, y: y-15, radius: 20)
         cursor!.color = .white
         canvas.addNode(shape: cursor!)
-        
-        for _ in 0..<Int(rows) {
-            x=outerPadding //Float(self.view.center.x) - (boardWidth/2)
-            for _ in 0..<Int(cols) {
-                let c1 = SLCircle(x: x+(blockDimension/2), y: y+(blockDimension/2), radius: 0.08)
-                c1.color = .white
-                canvas.addNode(shape: c1)
-                x+=(innerPadding+blockDimension)
-            }
-            y+=(innerPadding+blockDimension)
-        }
     }
 }
 
+//MARK: - Coins Setup
+extension ViewController {
+    
+    func setupCoins(x: Float, y:Float) {
+        var x = x
+        var y = y
+        for i in 0..<Int(rows) {
+            x=outerPadding //Float(self.view.center.x) - (boardWidth/2)
+            for j in 0..<Int(cols) {
+                let coin = SLCircle(x: x+(blockDimension/2), y: y-(blockDimension/2), radius: 0.08)
+                coin.color = .white
+                canvas.addNode(shape: coin)
+                x+=(innerPadding+blockDimension)
+                self.coins[i][j] = coin
+            }
+            y-=(innerPadding+blockDimension)
+        }
+    }
+}
 
 //MARK: - Canvas Column Blocks - WILL FINISH IT SOON
 /**They are used to create highlight effect. NOT COMPLETE**/
@@ -167,6 +176,27 @@ extension ViewController {
             return
         }
         cursor.color = SLGameSetings.cursorColor
+        
+        
+        guard let location = touches.first?.location(in: self.view) else {
+            return
+        }
+
+        guard let counter = self.getCursorCenterPositionCounter(x: Float(location.x), y: Float(location.y)) else {
+            return
+        }
+        
+    //Get column and row so that you can update the array
+        let col = counter
+        let row = self.currentCoinsColumnCounters[counter]
+        
+    //Get coin of that index, change color and increment the index so that other elements can be placed
+        guard let coin = self.coins[row][col] else {
+            return
+        }
+        
+        coin.color = .red
+        self.currentCoinsColumnCounters[counter]+=1
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
