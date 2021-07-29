@@ -62,10 +62,6 @@ class SLSquare: SLShape {
         self.y = y
         self.height = height
         self.width = width
-        
-        //Default color is white
-        //self.color = .red
-
     }
     
 //MARK: - Personal Methods
@@ -100,24 +96,12 @@ class SLSquare: SLShape {
         x2 = ((2*x2)*xk)-1
         y2 = ((-2*y2)*yk)+1
         
-        //Major changes
-        /*x1 = (self.x < 0) ? 0 : self.x
-        y1 = (self.y < 0) ? 0 : self.y
-        x2 = (x+width > Float(frame.width)) ? width : x+width
-        y2 = (y+height > Float(frame.height)) ? height : y+height*/
-        
-        
         
         //This is when you want to use index buffer
         self.vertices = [simd_float2(x1,y1), //v1 tl
                         simd_float2(x2,y1), //v2 tr
                         simd_float2(x2,y2), //v3 br
                         simd_float2(x1,y2)] //v4 bl
-        
-        
-        //self.vertices = [x1,y1,0,x2,y1,0,x2,y2,0,x1,y1,0,x1,y2,0,x2,y2,0]
-        //Set index buffer
-        
         
         //Update buffers
         self.updateBuffers()
@@ -151,7 +135,6 @@ class SLSquare: SLShape {
         renderCommandEncoder.setVertexBytes(&self.shapeColorConstant, length: MemoryLayout<SLShapeColorConstant>.stride, index: 1)
         
         //renderCommandEncoder.setVertexBytes(&self.uniforms, length: MemoryLayout<SLUniforms>.stride, index: 2)
-        renderCommandEncoder.setVertexBytes(&canvasCoordinates, length: MemoryLayout<SLCanvasDimensions>.stride, index: 2)
         
         //Render with indexed vertices
         renderCommandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: self.indices.count, indexType: .uint16, indexBuffer: self.indexBuffer, indexBufferOffset: 0)

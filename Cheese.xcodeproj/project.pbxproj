@@ -26,6 +26,7 @@
 		41F44BCE26B1D2B10011740B /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BCD26B1D2B10011740B /* Shaders.metal */; };
 		41F44BD026B1FE7A0011740B /* SLSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BCF26B1FE7A0011740B /* SLSquare.swift */; };
 		41F44BD226B23D340011740B /* SLGameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD126B23D340011740B /* SLGameSettings.swift */; };
+		41F44BD426B280470011740B /* SLCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD326B280470011740B /* SLCursor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		41F44BCD26B1D2B10011740B /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		41F44BCF26B1FE7A0011740B /* SLSquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLSquare.swift; sourceTree = "<group>"; };
 		41F44BD126B23D340011740B /* SLGameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLGameSettings.swift; sourceTree = "<group>"; };
+		41F44BD326B280470011740B /* SLCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCursor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,10 +167,11 @@
 		41F44BBE26B15F030011740B /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
-				41F44BCF26B1FE7A0011740B /* SLSquare.swift */,
 				41F44BC226B1BC010011740B /* SLShape.swift */,
 				41F44BC426B1BC550011740B /* SLNode.swift */,
+				41F44BCF26B1FE7A0011740B /* SLSquare.swift */,
 				41F44BC826B1BF420011740B /* SLCircle.swift */,
+				41F44BD326B280470011740B /* SLCursor.swift */,
 			);
 			path = Shapes;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41F44BD426B280470011740B /* SLCursor.swift in Sources */,
 				41F44BCE26B1D2B10011740B /* Shaders.metal in Sources */,
 				41F44BCB26B1C43D0011740B /* SLProtocols.swift in Sources */,
 				41F44BD026B1FE7A0011740B /* SLSquare.swift in Sources */,
