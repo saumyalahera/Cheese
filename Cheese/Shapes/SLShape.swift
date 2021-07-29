@@ -35,6 +35,9 @@ class SLShape: SLNode {
         }
     }
     
+    ///It will be used to project the object by changing pixel coordinates to NDC 
+    var uniforms: SLUniforms?
+    
 //MARK: - For Subclass methods
     /*This is required for initalising subclasses, when you add an object on a paper object, you should init buffers and vertices.*/
     func initialiseBuffers(frame: CGRect){
@@ -66,7 +69,7 @@ class SLShape: SLNode {
         renderCommandEncoder.setRenderPipelineState(SLTools.renderPipelineState)
         
         //Add a render command encoder
-        renderCommandEncoder.setVertexBytes(&self.shapeColorConstant, length: MemoryLayout<ShapeColor>.stride, index: 1)
+        renderCommandEncoder.setVertexBytes(&self.shapeColorConstant, length: MemoryLayout<SLShapeColorConstant>.stride, index: 1)
         
         //Render the shape
         renderCommandEncoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: self.vertices.count)

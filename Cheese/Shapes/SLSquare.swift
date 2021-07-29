@@ -100,6 +100,14 @@ class SLSquare: SLShape {
         x2 = ((2*x2)*xk)-1
         y2 = ((-2*y2)*yk)+1
         
+        //Major changes
+        /*x1 = (self.x < 0) ? 0 : self.x
+        y1 = (self.y < 0) ? 0 : self.y
+        x2 = (x+width > Float(frame.width)) ? width : x+width
+        y2 = (y+height > Float(frame.height)) ? height : y+height*/
+        
+        
+        
         //This is when you want to use index buffer
         self.vertices = [simd_float2(x1,y1), //v1 tl
                         simd_float2(x2,y1), //v2 tr
@@ -132,19 +140,35 @@ class SLSquare: SLShape {
     //Set texture
         //self.setTexture(imageName: "Senor2")
     //Check if this code is executed
+        //Init orthographic Matrix
+        self.uniforms = SLUniforms(orthographicModelMatrix: self.makeOrthographicMatrixc(left: 0, right: Float(superViewFrame!.width), bottom: Float(superViewFrame!.height), top: 0, near: -1, far: 1))
+        
+        
     }
     
     override func render(renderCommandEncoder: MTLRenderCommandEncoder) {
-        
         
         renderCommandEncoder.setRenderPipelineState(SLTools.renderPipelineState)
         
         renderCommandEncoder.setVertexBuffer(self.vertexBuffer, offset: 0, index: 0)
         
         //Add a render command encoder
-        renderCommandEncoder.setVertexBytes(&self.shapeColorConstant, length: MemoryLayout<ShapeColor>.stride, index: 1)
+        renderCommandEncoder.setVertexBytes(&self.shapeColorConstant, length: MemoryLayout<SLShapeColorConstant>.stride, index: 1)
+        
+        renderCommandEncoder.setVertexBytes(&self.uniforms, length: MemoryLayout<SLUniforms>.stride, index: 2)
         
         //Render with indexed vertices
         renderCommandEncoder.drawIndexedPrimitives(type: .triangle, indexCount: self.indices.count, indexType: .uint16, indexBuffer: self.indexBuffer, indexBufferOffset: 0)
     }
+    
+    func makeOrthographicMatrixc(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float) -> simd_float4x4 {
+        return simd_float4x4(
+            [ 2 / (right - left), 0, 0, 0],
+            [0, 2 / (top - bottom), 0, 0],
+            [0, 0, 1 / (far - near), 0],
+            [(left + right) / (left - right), (top + bottom) / (bottom - top), near / (near - far), 1]
+        )
+    }
+    
+    
 }

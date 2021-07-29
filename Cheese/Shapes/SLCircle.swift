@@ -131,7 +131,7 @@ class SLCircle:SLShape {
         renderCommandEncoder.setRenderPipelineState(SLTools.renderPipelineState!)
         
         //Add a render command encoder
-        renderCommandEncoder.setVertexBytes(&self.shapeColorConstant, length: MemoryLayout<ShapeColor>.stride, index: 1)
+        renderCommandEncoder.setVertexBytes(&self.shapeColorConstant, length: MemoryLayout<SLShapeColorConstant>.stride, index: 1)
         
         //renderCommandEncoder.drawPrimitives(type: .triangleStrip, vertexStart: 0, vertexCount: self.circleVertices.count)
         

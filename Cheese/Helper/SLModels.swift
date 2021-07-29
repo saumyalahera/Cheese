@@ -6,7 +6,14 @@
 //
 
 import simd
+import UIKit
 
 struct SLShapeColorConstant {
     var color:simd_float4
 }
+
+struct SLUniforms {
+    var orthographicModelMatrix:simd_float4x4
+}
+
+

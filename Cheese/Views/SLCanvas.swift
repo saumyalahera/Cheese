@@ -15,9 +15,7 @@ import MetalKit
 
 //This is used to set color
 
-struct ShapeColor {
-    var color:simd_float4
-}
+
 
 class SLCanvas: MTKView {
     
