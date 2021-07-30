@@ -28,7 +28,7 @@ public class SLGameSetings: NSObject {
     
     public static var playerOneCoinColor = UIColor.red
     
-    public static var playerTwoCoinColor = UIColor.yellow
+    public static var playerTwoCoinColor = UIColor.black
     
     public static var defaultCoinColor = UIColor.white
 }

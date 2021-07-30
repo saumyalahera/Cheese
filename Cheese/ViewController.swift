@@ -13,22 +13,11 @@ class ViewController: UIViewController {
     
     /*These help us build the columns because they work with touch methods to track the selected column number*/
     ///They are needed to calculate block size
-    var outerPadding:Float = 5
-    var innerPadding:Float = 3
-    //var rows:Float = 6
-    //var cols:Float = 7
-    var blockDimension:Float = 0
-    
-    /*This is used for animations, when a player taps, drags columns, they should animate.*/
-    var columnWidth:Float = 0
-    var columnHeight:Float = 0
+    var userInterfaceContext = SLUserInterfaceContext()
     
     /*Cursor shows which column user is pointing to*/
     ///This is used when a user drags or clicks on rows
     var cursor:SLCursor?
-    
-    ///Store center positions of the columns
-    var columnBlocksCenterPositions = [Float]()
     
     ///These are used for cursor and highlights
     var canvasBlocks = [SLShape?]()
@@ -41,8 +30,6 @@ class ViewController: UIViewController {
     
     ///GAME Context
     var gameContext = SLGameContext(rows: 6, columns: 7)
-    
-    
     
 //MARK: - View Controller Methods
     override func viewDidLoad() {
@@ -57,31 +44,36 @@ class ViewController: UIViewController {
    //Setup Canvas
         self.setupCanvas()
         
-    //Create canvas blocks, they are used to highlight columns and guides player to drop coins
-        self.createCanvasBlocks()
-        
-    //Create a grid
-        let x = outerPadding
-        var y = (self.canvasInfo.centerY)+(columnHeight/2)
-        
-    //Add All the coins holder
-        self.setupCoins(x: x, y: y)
-        
-    //Create a cursor that be used to guide which column the user has pressed
-        y = (self.canvasInfo.centerY)-(columnHeight/2)
-        self.setupCursor(x: x, y: y)
+    //Setup Game
+        self.setupGame()
     }
 }
 
 //MARK: - Game Logic
 extension ViewController {
-    
-    func setupPlayers() {
+    func setupGame() {
         
+        self.gameContext.playerOne = SLPlayer(name: "player", color: SLGameSetings.playerOneCoinColor, score: 0)
+        self.gameContext.playerTwo = SLPlayer(name: "AI", color: SLGameSetings.playerTwoCoinColor, score: 0)
         
-        
+        //Create canvas blocks, they are used to highlight columns and guides player to drop coins
+            self.createCanvasBlocks()
+            
+        //Create a grid
+            let x = self.userInterfaceContext.outerPadding
+            var y = (self.canvasInfo.centerY)+(self.userInterfaceContext.columnHeight/2)
+            
+        //Add All the coins holder
+            self.setupCoins(x: x, y: y)
+            
+        //Create a cursor that be used to guide which column the user has pressed
+            y = (self.canvasInfo.centerY)-(self.userInterfaceContext.columnHeight/2)
+            self.setupCursor(x: x, y: y)
     }
     
+    func resetGame() {
+        self.gameContext.resetGame(columns: 7, rows: 6)
+    }
 }
 
 //MARK: - Coins Setup and Other Views setup
@@ -104,17 +96,17 @@ extension ViewController {
         var y = y
         for row in 0..<Int(self.gameContext.rows) {
             
-            x=outerPadding 
+            x=self.userInterfaceContext.outerPadding
             for col in 0..<Int(self.gameContext.cols) {
                 
-                let coin = SLCircle(x: x+(blockDimension/2), y: y-(blockDimension/2), radius: 0.08)
+                let coin = SLCircle(x: x+(self.userInterfaceContext.blockDimension/2), y: y-(self.userInterfaceContext.blockDimension/2), radius: 0.08)
                 coin.color = SLGameSetings.defaultCoinColor
                 canvas.addNode(shape: coin)
-                x+=(innerPadding+blockDimension)
+                x+=(self.userInterfaceContext.innerPadding+self.userInterfaceContext.blockDimension)
                 self.gameContext.coins[col][row] = coin
                 //print("\(col),\(row)")
             }
-            y-=(innerPadding+blockDimension)
+            y-=(self.userInterfaceContext.innerPadding+self.userInterfaceContext.blockDimension)
         }
     }
     
@@ -132,25 +124,25 @@ extension ViewController {
     func createCanvasBlocks() {
         //self.screenWidth = Float(self.view.frame.width)
     //Calculate block width
-        columnWidth = self.canvasInfo.width - (2*outerPadding)
+        self.userInterfaceContext.columnWidth = self.canvasInfo.width - (2*self.userInterfaceContext.outerPadding)
     //Get block width
-        blockDimension = columnWidth - ((self.gameContext.cols-1)*innerPadding)
-        blockDimension/=self.gameContext.cols
+        self.userInterfaceContext.blockDimension = self.userInterfaceContext.columnWidth - ((self.gameContext.cols-1)*self.userInterfaceContext.innerPadding)
+        self.userInterfaceContext.blockDimension/=self.gameContext.cols
     //Get block height
-        columnHeight = (blockDimension*self.gameContext.rows) + ((self.gameContext.rows-1)*innerPadding)
+        self.userInterfaceContext.columnHeight = (self.userInterfaceContext.blockDimension*self.gameContext.rows) + ((self.gameContext.rows-1)*self.userInterfaceContext.innerPadding)
     //Get column width
-        columnWidth/=self.gameContext.cols
+        self.userInterfaceContext.columnWidth/=self.gameContext.cols
     //Coordinates
-        var x = outerPadding
-        let y = (self.canvasInfo.centerY)-(columnHeight/2)
+        var x = self.userInterfaceContext.outerPadding
+        let y = (self.canvasInfo.centerY)-(self.userInterfaceContext.columnHeight/2)
     //Setup blocks
         for _ in 0..<Int(self.gameContext.cols) {
-            let s1 = SLSquare(x: x, y: y, width: columnWidth, height: columnHeight)
+            let s1 = SLSquare(x: x, y: y, width: self.userInterfaceContext.columnWidth, height: self.userInterfaceContext.columnHeight)
             s1.color = SLGameSetings.columnHighlightColor
             canvas.addNode(shape: s1)
-            self.columnBlocksCenterPositions.append(x+(columnWidth/2))
+            self.gameContext.columnBlocksCenterPositions.append(x+(self.userInterfaceContext.columnWidth/2))
             self.canvasBlocks.append(s1)
-            x+=columnWidth
+            x+=self.userInterfaceContext.columnWidth
         }
     }
 }
@@ -164,10 +156,10 @@ extension ViewController {
     func getCursorCenterPositionCounter(x: Float, y:Float) -> Int? {
         
     //To check if the player is dragging in the zone
-        let halfHeight = self.columnHeight/2
+        let halfHeight = self.userInterfaceContext.columnHeight/2
         if(y <= (self.canvasInfo.centerY + halfHeight) && y >= (self.canvasInfo.centerY - halfHeight)) {
             
-            let counter = Int(x/self.columnWidth)
+            let counter = Int(x/self.userInterfaceContext.columnWidth)
             
             guard counter < Int(self.gameContext.cols) else{
                 return nil
@@ -191,7 +183,7 @@ extension ViewController {
         }
         
         cursor.color = SLGameSetings.cursorHighlightColor
-        cursor.x = self.columnBlocksCenterPositions[counter] //shape.x+(self.columnWidth/2)
+        cursor.x = self.gameContext.columnBlocksCenterPositions[counter] //shape.x+(self.columnWidth/2)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -211,37 +203,22 @@ extension ViewController {
     //Get row and column
         let row = self.gameContext.currentCoinsColumnTopPositions[column]
         
-        guard let turn = self.updatePlay(column: column,row: row,playerCoinColor: SLGameSetings.playerOneCoinColor, name: "PL") else {
+        guard let turn = self.updatePlay(column: column,row: row, player: self.gameContext.playerOne) else {
             return
         }
         
-        /*if(self.gameContext.horizontalCheck(x: column, y: row, maxCol: Int(self.gameContext.cols)-1)) {
-            print("YOU WIN!!!")
-        }*/
-        if(self.gameContext.verticalCheck(x: column, y: row, maxRow: Int(self.gameContext.rows)-1)) {
-            print("YOU WIN!!!")
-        }
-        
+    
         guard let column = self.gameContext.makeAIPlay() else {
             return
         }
         
-        //self.updatePlay(row: row, column: column, playerCoinColor: SLGameSetings.playerTwoCoinColor, name: "AI")
-        
-        
-        //CPU TURN
-        //self.gameContext.
-        
-        
-    //Check if the player has won or not
-        
-    //Change cursor if there is another player
-        
-    //CPU Turn
-    
+        self.updatePlay(column: column, row: row, player: self.gameContext.playerTwo)
     }
     
-    func updatePlay(column:Int, row: Int, playerCoinColor:UIColor, name:String) -> Bool?{
+    
+    @discardableResult func updatePlay(column:Int, row: Int, player:SLPlayer) -> Bool?{
+        
+        self.gameContext.playerOneTurn = false
         
         let rowK = Int(self.gameContext.rows)
         let col = column
@@ -256,11 +233,11 @@ extension ViewController {
             return nil
         }
         
-        coin.color = playerCoinColor
-        coin.name = name
+        coin.color = player.color
+        coin.name = player.name
         self.gameContext.currentCoinsColumnTopPositions[col]+=1
+        self.gameContext.coinsCounter+=1
         self.gameContext.topPositions[col] = row
-        
         
         if(row == (rowK-1)) {
             //Remove the key
@@ -268,10 +245,14 @@ extension ViewController {
             self.gameContext.topPositions[col] = nil
         }
         
+        self.gameContext.playerOneTurn = true
+        
     //Check if the USER won or not
+        if self.gameContext.winnerCheck(x: column, y: row, player: player) {
+            //SHOW NEW GAME VIEW
+        }
         
         return true
-        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -288,7 +269,7 @@ extension ViewController {
         }
         
         cursor.color = SLGameSetings.cursorHighlightColor
-        cursor.x = self.columnBlocksCenterPositions[counter]
+        cursor.x = self.gameContext.columnBlocksCenterPositions[counter]
     }
 }
 

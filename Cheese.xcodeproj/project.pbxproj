@@ -27,6 +27,7 @@
 		41F44BD026B1FE7A0011740B /* SLSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BCF26B1FE7A0011740B /* SLSquare.swift */; };
 		41F44BD226B23D340011740B /* SLGameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD126B23D340011740B /* SLGameSettings.swift */; };
 		41F44BD426B280470011740B /* SLCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD326B280470011740B /* SLCursor.swift */; };
+		41F44BD626B439C00011740B /* SLGameContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD526B439C00011740B /* SLGameContext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +72,7 @@
 		41F44BCF26B1FE7A0011740B /* SLSquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLSquare.swift; sourceTree = "<group>"; };
 		41F44BD126B23D340011740B /* SLGameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLGameSettings.swift; sourceTree = "<group>"; };
 		41F44BD326B280470011740B /* SLCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCursor.swift; sourceTree = "<group>"; };
+		41F44BD526B439C00011740B /* SLGameContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLGameContext.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +162,7 @@
 				41F44BBB26B15E4E0011740B /* SLTools.swift */,
 				41F44BC626B1BD6C0011740B /* SLModels.swift */,
 				41F44BD126B23D340011740B /* SLGameSettings.swift */,
+				41F44BD526B439C00011740B /* SLGameContext.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				41F44BC326B1BC010011740B /* SLShape.swift in Sources */,
 				41F44BD226B23D340011740B /* SLGameSettings.swift in Sources */,
 				41F44BC526B1BC550011740B /* SLNode.swift in Sources */,
+				41F44BD626B439C00011740B /* SLGameContext.swift in Sources */,
 				41F44B8C26B157A70011740B /* AppDelegate.swift in Sources */,
 				41F44BBA26B1594E0011740B /* SLPocket.swift in Sources */,
 				41F44B8E26B157A70011740B /* SceneDelegate.swift in Sources */,
