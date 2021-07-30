@@ -102,17 +102,17 @@ extension ViewController {
     func setupCoins(x: Float, y:Float) {
         var x = x
         var y = y
-        for i in 0..<Int(self.gameContext.rows) {
+        for row in 0..<Int(self.gameContext.rows) {
             
             x=outerPadding 
-            for j in 0..<Int(self.gameContext.cols) {
+            for col in 0..<Int(self.gameContext.cols) {
                 
                 let coin = SLCircle(x: x+(blockDimension/2), y: y-(blockDimension/2), radius: 0.08)
                 coin.color = SLGameSetings.defaultCoinColor
                 canvas.addNode(shape: coin)
                 x+=(innerPadding+blockDimension)
-                self.gameContext.coins[i][j] = coin
-                print("\(i),\(j)")
+                self.gameContext.coins[col][row] = coin
+                //print("\(col),\(row)")
             }
             y-=(innerPadding+blockDimension)
         }
@@ -211,11 +211,14 @@ extension ViewController {
     //Get row and column
         let row = self.gameContext.currentCoinsColumnTopPositions[column]
         
-        guard let turn = self.updatePlay(row: row, column: column, playerCoinColor: SLGameSetings.playerOneCoinColor, name: "PL") else {
+        guard let turn = self.updatePlay(column: column,row: row,playerCoinColor: SLGameSetings.playerOneCoinColor, name: "PL") else {
             return
         }
         
-        if(self.gameContext.horizontalCheck(x: column, y: row, maxCol: Int(self.gameContext.cols)-1)) {
+        /*if(self.gameContext.horizontalCheck(x: column, y: row, maxCol: Int(self.gameContext.cols)-1)) {
+            print("YOU WIN!!!")
+        }*/
+        if(self.gameContext.verticalCheck(x: column, y: row, maxRow: Int(self.gameContext.rows)-1)) {
             print("YOU WIN!!!")
         }
         
@@ -238,18 +241,18 @@ extension ViewController {
     
     }
     
-    func updatePlay(row: Int, column:Int, playerCoinColor:UIColor, name:String) -> Bool?{
+    func updatePlay(column:Int, row: Int, playerCoinColor:UIColor, name:String) -> Bool?{
         
         let rowK = Int(self.gameContext.rows)
         let col = column
-        let row = self.gameContext.currentCoinsColumnTopPositions[col]
+        let row = row//self.gameContext.currentCoinsColumnTopPositions[col]
     //
         if(row >= rowK) {
             return nil
         }
         
     //Get coin of that index, change color and increment the index so that other elements can be placed
-        guard let coin = self.gameContext.coins[row][col] else {
+        guard let coin = self.gameContext.coins[col][row] else {
             return nil
         }
         
