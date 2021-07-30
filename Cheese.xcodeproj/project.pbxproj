@@ -28,6 +28,7 @@
 		41F44BD226B23D340011740B /* SLGameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD126B23D340011740B /* SLGameSettings.swift */; };
 		41F44BD426B280470011740B /* SLCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD326B280470011740B /* SLCursor.swift */; };
 		41F44BD626B439C00011740B /* SLGameContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD526B439C00011740B /* SLGameContext.swift */; };
+		41F44BD826B4AA750011740B /* SLStartScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD726B4AA750011740B /* SLStartScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		41F44BD126B23D340011740B /* SLGameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLGameSettings.swift; sourceTree = "<group>"; };
 		41F44BD326B280470011740B /* SLCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCursor.swift; sourceTree = "<group>"; };
 		41F44BD526B439C00011740B /* SLGameContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLGameContext.swift; sourceTree = "<group>"; };
+		41F44BD726B4AA750011740B /* SLStartScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLStartScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				41F44BC026B160740011740B /* SLCanvas.swift */,
+				41F44BD726B4AA750011740B /* SLStartScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -333,6 +336,7 @@
 				41F44BC926B1BF420011740B /* SLCircle.swift in Sources */,
 				41F44BBC26B15E4E0011740B /* SLTools.swift in Sources */,
 				41F44B9026B157A70011740B /* ViewController.swift in Sources */,
+				41F44BD826B4AA750011740B /* SLStartScreen.swift in Sources */,
 				41F44BC726B1BD6C0011740B /* SLModels.swift in Sources */,
 				41F44BC126B160740011740B /* SLCanvas.swift in Sources */,
 				41F44BC326B1BC010011740B /* SLShape.swift in Sources */,

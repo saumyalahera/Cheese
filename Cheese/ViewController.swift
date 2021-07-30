@@ -4,6 +4,12 @@
 //
 //  Created by Saumya Lahera on 7/28/21.
 //
+/*
+ reset
+ diagonal
+ view controller
+ 2 players
+ */
 
 import UIKit
 
@@ -29,7 +35,11 @@ class ViewController: UIViewController {
     var canvasInfo = SLCanvasInfo(centerX: 0, centerY: 0, width: 0, height: 0)
     
     ///GAME Context
-    var gameContext = SLGameContext(rows: 6, columns: 7)
+    var gameContext:SLGameContext!// = SLGameContext(rows: 6, columns: 7,)
+    
+    ///Setup players
+    var player1 = SLPlayer(name: "player", color: SLGameSetings.playerOneCoinColor, score: 0)
+    var player2 = SLPlayer(name: "AI", color: SLGameSetings.playerTwoCoinColor, score: 0)
     
 //MARK: - View Controller Methods
     override func viewDidLoad() {
@@ -52,27 +62,29 @@ class ViewController: UIViewController {
 //MARK: - Game Logic
 extension ViewController {
     func setupGame() {
+    
+        self.gameContext = SLGameContext(columns: 7, rows: 6, gameType: .TwoPlayer, firstPlayer: true, playerOne: player1,playerTwo: player2)
         
-        self.gameContext.playerOne = SLPlayer(name: "player", color: SLGameSetings.playerOneCoinColor, score: 0)
-        self.gameContext.playerTwo = SLPlayer(name: "AI", color: SLGameSetings.playerTwoCoinColor, score: 0)
+    //Create canvas blocks, they are used to highlight columns and guides player to drop coins
+        self.createCanvasBlocks()
+            
+    //Create a grid
+        let x = self.userInterfaceContext.outerPadding
+        var y = (self.canvasInfo.centerY)+(self.userInterfaceContext.columnHeight/2)
+            
+    //Add All the coins holder
+        self.setupCoins(x: x, y: y)
+            
+    //Create a cursor that be used to guide which column the user has pressed
+        y = (self.canvasInfo.centerY)-(self.userInterfaceContext.columnHeight/2)
+        self.setupCursor(x: x, y: y)
         
-        //Create canvas blocks, they are used to highlight columns and guides player to drop coins
-            self.createCanvasBlocks()
-            
-        //Create a grid
-            let x = self.userInterfaceContext.outerPadding
-            var y = (self.canvasInfo.centerY)+(self.userInterfaceContext.columnHeight/2)
-            
-        //Add All the coins holder
-            self.setupCoins(x: x, y: y)
-            
-        //Create a cursor that be used to guide which column the user has pressed
-            y = (self.canvasInfo.centerY)-(self.userInterfaceContext.columnHeight/2)
-            self.setupCursor(x: x, y: y)
+        //self.resetGame()
     }
     
-    func resetGame() {
-        self.gameContext.resetGame(columns: 7, rows: 6)
+    func resetGame(text: String) {
+        self.gameContext.resetGame(columns: 7, rows: 6, gameType: .TwoPlayer, firstPlayer: true, playerOne: player1, playerTwo: player2)
+        print("current player: \(self.gameContext.currentPlayer.name) and color: \(self.gameContext.currentPlayer.color)")
     }
 }
 
@@ -201,28 +213,30 @@ extension ViewController {
         }
         
     //Get row and column
-        let row = self.gameContext.currentCoinsColumnTopPositions[column]
+        //let row = self.gameContext.currentCoinsColumnTopPositions[column]
         
-        guard let turn = self.updatePlay(column: column,row: row, player: self.gameContext.playerOne) else {
+        guard let turn = self.updatePlay(column: column, player: self.gameContext.currentPlayer) else {
             return
         }
         
+        self.gameContext.playerOneTurn.toggle()
+        
+        self.gameContext.currentPlayer = self.gameContext.playerTwo
+        
+        if self.gameContext.playerOneTurn {
+            self.gameContext.currentPlayer = self.gameContext.playerOne
+        }
     
-        guard let column = self.gameContext.makeAIPlay() else {
-            return
-        }
-        
-        self.updatePlay(column: column, row: row, player: self.gameContext.playerTwo)
     }
     
     
-    @discardableResult func updatePlay(column:Int, row: Int, player:SLPlayer) -> Bool?{
+    @discardableResult func updatePlay(column:Int, player:SLPlayer) -> Bool?{
         
-        self.gameContext.playerOneTurn = false
+        //self.gameContext.playerOneTurn = false
         
         let rowK = Int(self.gameContext.rows)
         let col = column
-        let row = row//self.gameContext.currentCoinsColumnTopPositions[col]
+        let row = self.gameContext.currentCoinsColumnTopPositions[col]
     //
         if(row >= rowK) {
             return nil
@@ -245,11 +259,27 @@ extension ViewController {
             self.gameContext.topPositions[col] = nil
         }
         
-        self.gameContext.playerOneTurn = true
+        //self.gameContext.playerOneTurn = true
         
     //Check if the USER won or not
         if self.gameContext.winnerCheck(x: column, y: row, player: player) {
+            
+            var message = "\(player.name) Won!!!"
+            if(self.gameContext.coinsCounter == 30) {
+                message = "It is a draw"
+            }
+            
+            //Display the poster
             //SHOW NEW GAME VIEW
+            //self.resetGame()
+            
+            
+            
+            //Show view that shows the display
+            //show the message sir
+            
+            //self.gameContext.resetPlay = false
+            return nil
         }
         
         return true
