@@ -15,8 +15,8 @@ class ViewController: UIViewController {
     ///They are needed to calculate block size
     var outerPadding:Float = 5
     var innerPadding:Float = 3
-    var rows:Float = 6
-    var cols:Float = 7
+    //var rows:Float = 6
+    //var cols:Float = 7
     var blockDimension:Float = 0
     
     /*This is used for animations, when a player taps, drags columns, they should animate.*/
@@ -42,10 +42,9 @@ class ViewController: UIViewController {
     ///Coin and coordinates
     var coins:[[SLCircle?]] = Array(repeating: Array(repeating: nil, count: 7), count: 6)
     
-    ///This is to keep track of a new coin
-    var currentCoinsColumnCounters:[Int] = Array(repeating: 0, count: 7)
+    ///GAME Context
+    var gameContext = SLGameContext(rows: 6, columns: 7)
     
-    //Players
     
     
 //MARK: - View Controller Methods
@@ -106,10 +105,10 @@ extension ViewController {
     func setupCoins(x: Float, y:Float) {
         var x = x
         var y = y
-        for i in 0..<Int(rows) {
+        for i in 0..<Int(self.gameContext.rows) {
             
             x=outerPadding 
-            for j in 0..<Int(cols) {
+            for j in 0..<Int(self.gameContext.cols) {
                 
                 let coin = SLCircle(x: x+(blockDimension/2), y: y-(blockDimension/2), radius: 0.08)
                 coin.color = SLGameSetings.defaultCoinColor
@@ -137,17 +136,17 @@ extension ViewController {
     //Calculate block width
         columnWidth = self.canvasInfo.width - (2*outerPadding)
     //Get block width
-        blockDimension = columnWidth - ((cols-1)*innerPadding)
-        blockDimension/=cols
+        blockDimension = columnWidth - ((self.gameContext.cols-1)*innerPadding)
+        blockDimension/=self.gameContext.cols
     //Get block height
-        columnHeight = (blockDimension*rows) + ((rows-1)*innerPadding)
+        columnHeight = (blockDimension*self.gameContext.rows) + ((self.gameContext.rows-1)*innerPadding)
     //Get column width
-        columnWidth/=cols
+        columnWidth/=self.gameContext.cols
     //Coordinates
         var x = outerPadding
         let y = (self.canvasInfo.centerY)-(columnHeight/2)
     //Setup blocks
-        for _ in 0..<Int(cols) {
+        for _ in 0..<Int(self.gameContext.cols) {
             let s1 = SLSquare(x: x, y: y, width: columnWidth, height: columnHeight)
             s1.color = SLGameSetings.columnHighlightColor
             canvas.addNode(shape: s1)
@@ -172,7 +171,7 @@ extension ViewController {
             
             let counter = Int(x/self.columnWidth)
             
-            guard counter < Int(cols) else{
+            guard counter < Int(self.gameContext.cols) else{
                 return nil
             }
             return counter
@@ -203,30 +202,28 @@ extension ViewController {
         }
         cursor.color = SLGameSetings.cursorColor
         
-        
         guard let location = touches.first?.location(in: self.view) else {
             return
         }
 
-        guard let counter = self.getCursorCenterPositionCounter(x: Float(location.x), y: Float(location.y)) else {
+        guard let column = self.getCursorCenterPositionCounter(x: Float(location.x), y: Float(location.y)) else {
             return
         }
         
-    //Get column and row so that you can update the array
-        let col = counter
-        let row = self.currentCoinsColumnCounters[counter]
-        
-        if(row >= Int(rows)) {
+        guard let turn = self.updatePlay(column: column, playerCoinColor: SLGameSetings.playerOneCoinColor) else {
             return
         }
         
-    //Get coin of that index, change color and increment the index so that other elements can be placed
-        guard let coin = self.coins[row][col] else {
+        guard let column = self.gameContext.makeAIPlay() else {
             return
         }
         
-        coin.color = .red
-        self.currentCoinsColumnCounters[counter]+=1
+        self.updatePlay(column: column, playerCoinColor: SLGameSetings.playerTwoCoinColor)
+        
+        
+        //CPU TURN
+        //self.gameContext.
+        
         
     //Check if the player has won or not
         
@@ -234,6 +231,38 @@ extension ViewController {
         
     //CPU Turn
     
+    }
+    
+    func updatePlay(column:Int, playerCoinColor:UIColor) -> Bool?{
+        
+        let rowK = Int(self.gameContext.rows)
+        let col = column
+        let row = self.gameContext.currentCoinsColumnTopPositions[col]
+        
+        if(row >= rowK) {
+            return nil
+        }
+        
+    //Get coin of that index, change color and increment the index so that other elements can be placed
+        guard let coin = self.coins[row][col] else {
+            return nil
+        }
+        
+        coin.color = playerCoinColor
+        self.gameContext.currentCoinsColumnTopPositions[col]+=1
+        self.gameContext.topPositions[col] = row
+        
+        
+        if(row == (rowK-1)) {
+            //Remove the key
+            self.gameContext.currentCoinsColumnTopPositions[col] = rowK
+            self.gameContext.topPositions[col] = nil
+        }
+        
+    //Check if the USER won or not
+        
+        return true
+        
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
