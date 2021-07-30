@@ -23,4 +23,12 @@ public class SLGameSetings: NSObject {
     public static var cursorColor = UIColor.white
     
     public static var cursorHighlightColor = UIColor.systemBlue
+
+    public static var gameType = SLGameType.SinglePlayer
+    
+    public static var playerOneCoinColor = UIColor.red
+    
+    public static var playerTwoCoinColor = UIColor.yellow
+    
+    public static var defaultCoinColor = UIColor.white
 }

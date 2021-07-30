@@ -45,6 +45,9 @@ class ViewController: UIViewController {
     ///This is to keep track of a new coin
     var currentCoinsColumnCounters:[Int] = Array(repeating: 0, count: 7)
     
+    //Players
+    
+    
 //MARK: - View Controller Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,13 +58,8 @@ class ViewController: UIViewController {
         }
         SLTools.setupMetalComponents(device: device, queue: queue)
         
-    //Canvas view
-        canvas = SLCanvas(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
-        canvas.color = UIColor.white
-        self.view.addSubview(canvas)
-        
-    //Update canvas information
-        self.canvasInfo = SLCanvasInfo(centerX: Float(self.view.center.x), centerY: Float(self.view.center.y), width: Float(self.view.frame.width), height: Float(self.view.frame.height))
+   //Setup Canvas
+        self.setupCanvas()
         
     //Create canvas blocks, they are used to highlight columns and guides player to drop coins
         self.createCanvasBlocks()
@@ -75,30 +73,58 @@ class ViewController: UIViewController {
         
     //Create a cursor that be used to guide which column the user has pressed
         y = (self.canvasInfo.centerY)-(columnHeight/2)
-        
-        self.cursor = SLCursor(x: self.canvasInfo.centerX, y: y-15, radius: 20)
-        cursor!.color = .white
-        canvas.addNode(shape: cursor!)
+        self.setupCursor(x: x, y: y)
     }
 }
 
-//MARK: - Coins Setup
+//MARK: - Game Logic
 extension ViewController {
+    
+    func setupPlayers() {
+        
+        
+        
+    }
+    
+}
+
+//MARK: - Coins Setup and Other Views setup
+extension ViewController {
+    
+/*Canvas where all the objects are rendered*/
+    func setupCanvas() {
+        
+        canvas = SLCanvas(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+        canvas.color = UIColor.white
+        self.view.addSubview(canvas)
+        SLPocket.addConstraints(leading: 0, trailing: 0, top: 0, bottom: 0, view: canvas)
+        
+    //Update canvas information
+        self.canvasInfo = SLCanvasInfo(centerX: Float(self.view.center.x), centerY: Float(self.view.center.y), width: Float(self.view.frame.width), height: Float(self.view.frame.height))
+    }
     
     func setupCoins(x: Float, y:Float) {
         var x = x
         var y = y
         for i in 0..<Int(rows) {
-            x=outerPadding //Float(self.view.center.x) - (boardWidth/2)
+            
+            x=outerPadding 
             for j in 0..<Int(cols) {
+                
                 let coin = SLCircle(x: x+(blockDimension/2), y: y-(blockDimension/2), radius: 0.08)
-                coin.color = .white
+                coin.color = SLGameSetings.defaultCoinColor
                 canvas.addNode(shape: coin)
                 x+=(innerPadding+blockDimension)
                 self.coins[i][j] = coin
             }
             y-=(innerPadding+blockDimension)
         }
+    }
+    
+    func setupCursor(x: Float, y:Float) {
+        self.cursor = SLCursor(x: self.canvasInfo.centerX, y: y-15, radius: 20)
+        cursor!.color = .white
+        canvas.addNode(shape: cursor!)
     }
 }
 
@@ -190,6 +216,10 @@ extension ViewController {
         let col = counter
         let row = self.currentCoinsColumnCounters[counter]
         
+        if(row >= Int(rows)) {
+            return
+        }
+        
     //Get coin of that index, change color and increment the index so that other elements can be placed
         guard let coin = self.coins[row][col] else {
             return
@@ -197,6 +227,13 @@ extension ViewController {
         
         coin.color = .red
         self.currentCoinsColumnCounters[counter]+=1
+        
+    //Check if the player has won or not
+        
+    //Change cursor if there is another player
+        
+    //CPU Turn
+    
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {

@@ -6,6 +6,7 @@
 //
 import Foundation
 import MetalKit
+import UIKit
 
 /**This class holds important functions required to render shapes*/
 public class SLPocket {
@@ -337,6 +338,26 @@ extension SLPocket {
         )
     }
     
+}
+
+/**This class is to add Autolayout constraints**/
+extension SLPocket {
+    
+/**This is used to make **/
+   class func addConstraints(leading:CGFloat, trailing:CGFloat, top:CGFloat, bottom:CGFloat, view:UIView) {
+        guard let superview = view.superview else {
+            return
+        }
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading),
+            view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing),
+            view.topAnchor.constraint(equalTo: superview.topAnchor, constant: top),
+            view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom)
+        ])
+        
+    }
 }
 
 

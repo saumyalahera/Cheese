@@ -65,8 +65,6 @@ class SLSquare: SLShape {
 //MARK: - Personal Methods
     private func processCoordinates() {
        
-        print("process coordinates")
-        
         //Check if the frame
         guard let frame = self.superViewFrame else {
             return
