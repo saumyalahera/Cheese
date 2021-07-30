@@ -38,6 +38,8 @@ class SLShape: SLNode {
     ///It will be used to project the object by changing pixel coordinates to NDC 
     var uniforms: SLUniforms?
     
+    var name:String?
+    
 //MARK: - For Subclass methods
     /*This is required for initalising subclasses, when you add an object on a paper object, you should init buffers and vertices.*/
     func initialiseBuffers(frame: CGRect){

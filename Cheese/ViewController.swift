@@ -39,9 +39,6 @@ class ViewController: UIViewController {
     ///Canvas info will be used to render subviews
     var canvasInfo = SLCanvasInfo(centerX: 0, centerY: 0, width: 0, height: 0)
     
-    ///Coin and coordinates
-    var coins:[[SLCircle?]] = Array(repeating: Array(repeating: nil, count: 7), count: 6)
-    
     ///GAME Context
     var gameContext = SLGameContext(rows: 6, columns: 7)
     
@@ -114,7 +111,8 @@ extension ViewController {
                 coin.color = SLGameSetings.defaultCoinColor
                 canvas.addNode(shape: coin)
                 x+=(innerPadding+blockDimension)
-                self.coins[i][j] = coin
+                self.gameContext.coins[i][j] = coin
+                print("\(i),\(j)")
             }
             y-=(innerPadding+blockDimension)
         }
@@ -210,15 +208,22 @@ extension ViewController {
             return
         }
         
-        guard let turn = self.updatePlay(column: column, playerCoinColor: SLGameSetings.playerOneCoinColor) else {
+    //Get row and column
+        let row = self.gameContext.currentCoinsColumnTopPositions[column]
+        
+        guard let turn = self.updatePlay(row: row, column: column, playerCoinColor: SLGameSetings.playerOneCoinColor, name: "PL") else {
             return
+        }
+        
+        if(self.gameContext.horizontalCheck(x: column, y: row, maxCol: Int(self.gameContext.cols)-1)) {
+            print("YOU WIN!!!")
         }
         
         guard let column = self.gameContext.makeAIPlay() else {
             return
         }
         
-        self.updatePlay(column: column, playerCoinColor: SLGameSetings.playerTwoCoinColor)
+        //self.updatePlay(row: row, column: column, playerCoinColor: SLGameSetings.playerTwoCoinColor, name: "AI")
         
         
         //CPU TURN
@@ -233,22 +238,23 @@ extension ViewController {
     
     }
     
-    func updatePlay(column:Int, playerCoinColor:UIColor) -> Bool?{
+    func updatePlay(row: Int, column:Int, playerCoinColor:UIColor, name:String) -> Bool?{
         
         let rowK = Int(self.gameContext.rows)
         let col = column
         let row = self.gameContext.currentCoinsColumnTopPositions[col]
-        
+    //
         if(row >= rowK) {
             return nil
         }
         
     //Get coin of that index, change color and increment the index so that other elements can be placed
-        guard let coin = self.coins[row][col] else {
+        guard let coin = self.gameContext.coins[row][col] else {
             return nil
         }
         
         coin.color = playerCoinColor
+        coin.name = name
         self.gameContext.currentCoinsColumnTopPositions[col]+=1
         self.gameContext.topPositions[col] = row
         
