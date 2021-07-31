@@ -9,9 +9,11 @@ import Foundation
 
 class SLGameContext {
     
+/*Create a move variable that keeps track if the move was complete or not*/
+    var completedMove = false
 /*Patter rule check*/
     let patternCount = 3
-/*Turn*/
+/*Turn- This decides who playe first*/
    var playerOneTurn = true
 /*Columns and Rows*/
     var rows:Float = 6
@@ -37,7 +39,7 @@ class SLGameContext {
     var topPositions = [Int:Int]()
     
 /*Game type*/
-    var gameType:SLGameType!
+    //var gameType:SLGameType!
     
 /*Coins*/
     var coins = [[SLCircle?]]()// = Array(repeating: Array(repeating: nil, count: 7), count: 6)
@@ -76,7 +78,7 @@ class SLGameContext {
         self.playerOne = playerOne
         self.playerTwo = playerTwo
         self.playerOneTurn = firstPlayer
-        self.gameType = gameType
+        //self.gameType = gameType
         self.currentPlayer = self.playerOne
         if !firstPlayer {
             self.currentPlayer = self.playerTwo

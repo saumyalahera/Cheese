@@ -26,9 +26,9 @@ public class SLGameSetings: NSObject {
 //SML
     public static var gameType = SLGameType.TwoPlayer
     
-    public static var playerOneCoinColor = UIColor.red
+    public static var playerOneCoinColor = UIColor(red: 195/255, green: 189/255, blue: 232/255, alpha: 1) //UIColor.red
     
-    public static var playerTwoCoinColor = UIColor.yellow
+    public static var playerTwoCoinColor = UIColor(red: 196/255, green: 246/255, blue: 201/255, alpha: 1) //UIColor.yellow
     
     public static var defaultCoinColor = UIColor.white
     
