@@ -105,10 +105,10 @@ class SLGameContext {
         let maxRow = Int(self.rows)-1
         let maxCol = Int(self.cols)-1
         
-       
-        if self.horizontalCheck(x: x, y: y, maxCol: maxCol) || self.verticalCheck(x: x, y: y, maxRow: maxRow) {
+
+        if self.horizontalCheck(x: x, y: y, maxCol: maxCol) || self.verticalCheck(x: x, y: y, maxRow: maxRow) || self.diagonalCheck(x: x, y: y) {
             player.score+=1
-            //print("\(player.name) won! Player One: \(playerOne.score), Player Two: \(playerTwo.score)")
+            print("\(player.name) won! Player One: \(playerOne.score), Player Two: \(playerTwo.score)")
             return true
         }
         
@@ -117,6 +117,40 @@ class SLGameContext {
             return true
         }
         
+        return false
+    }
+    
+/*Diagonal Check*/
+    func diagonalCheck(x: Int, y:Int) -> Bool {
+            
+    //Get two points
+        let p1 = self.getMinCoin(X: x, Y: y)
+        let p2 = self.getMaxCoin(X: x, Y: y)
+            
+    //Calculates number of passes needed
+        var iterations = (p2.x - p1.x) - patternCount
+        iterations+=2
+        iterations = max(0, iterations-1)
+            
+    //Index tracker
+        var ix = p1.x-1
+        var iy = p1.y-1
+            
+        print("min: \(p1), max: \(p2), iterations: \(iterations)")
+    //Iterate
+        for _ in 0..<iterations {
+            ix+=1
+            iy+=1
+            print("(\(ix),\(iy)), (\(ix+1),\(iy+1)), (\(ix+2),\(iy+2)), (\(ix+3),\(iy+3))")
+                
+            guard let c1 = self.coins[ix][iy]?.name, let c2 = self.coins[ix+1][iy+1]?.name, let c3 = self.coins[ix+2][iy+2]?.name, let c4 = self.coins[ix+3][iy+3]?.name else {
+                continue
+             }
+            print("I am here: \([c1,c2,c3,c4])")
+            if Set([c1,c2,c3,c4]).count == 1 {
+                return true
+            }
+        }
         return false
     }
     
@@ -176,35 +210,7 @@ class SLGameContext {
         return false
     }
     
-/*Diagonal Check*/
-    func diagonalCheck(x: Int, y:Int) -> Bool {
-        
-    //Get two points
-        let p1 = self.getMinCoin(X: x, Y: y)
-        let p2 = self.getMaxCoin(X: x, Y: y)
-        
-    //Calculates number of passes needed
-        var iterations = (p2.x - p1.x) - patternCount
-        iterations = max(0, iterations-1)
-        
-    //Index tracker
-        var ix = p1.x-1
-        var iy = p1.y-1
-        
-        print("min: \(p1), max: \(p2), iterations: \(iterations)")
-    //Iterate
-        for _ in 0...iterations {
-            ix+=1
-            iy+=1
-            guard let c1 = self.coins[ix][iy]?.name, let c2 = self.coins[ix+1][iy+1]?.name, let c3 = self.coins[ix+2][iy+2]?.name, let c4 = self.coins[ix+3][iy+3]?.name else {
-                continue
-            }
-            if Set([c1,c2,c3,c4]).count == 1 {
-                return true
-            }
-        }
-        return false
-    }
+
 /*This will return the first/min diagonal coin*/
     func getMinCoin(X: Int, Y:Int) -> (x:Int, y:Int){
         
