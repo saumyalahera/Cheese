@@ -8,10 +8,10 @@
 import Foundation
 import UIKit
 
-public class SLGameSetings: NSObject {
+public class SLGameSettings: NSObject {
     
 //MARK: - Create a shared device object
-    static let shared = SLGameSetings()
+    static let shared = SLGameSettings()
 
 //MARK: - Create Colors
     public static var canvasColor = UIColor.white

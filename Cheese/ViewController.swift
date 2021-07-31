@@ -46,8 +46,8 @@ class ViewController: UIViewController {
     var gameEnvironmentInitialsed = false
     
     ///Setup players
-    var player1 = SLPlayer(name: "player", color: SLGameSetings.playerOneCoinColor, score: 0)
-    var player2 = SLPlayer(name: "AI", color: SLGameSetings.playerTwoCoinColor, score: 0)
+    var player1 = SLPlayer(name: "player", color: SLGameSettings.playerOneCoinColor, score: 0)
+    var player2 = SLPlayer(name: "AI", color: SLGameSettings.playerTwoCoinColor, score: 0)
     
 //MARK: - View Controller Methods
     override func viewDidLoad() {
@@ -100,7 +100,7 @@ extension ViewController {
     3. Setup cursor and other UI elements*/
     func setupGame() {
        
-        self.gameContext = SLGameContext(columns: SLGameSetings.columns, rows: SLGameSetings.rows, gameType: SLGameSetings.gameType, firstPlayer: true, playerOne: player1,playerTwo: player2)
+        self.gameContext = SLGameContext(columns: SLGameSettings.columns, rows: SLGameSettings.rows, gameType: SLGameSettings.gameType, firstPlayer: true, playerOne: player1,playerTwo: player2)
         
         //Create canvas blocks, they are used to highlight columns and guides player to drop coins
         self.createCanvasBlocks()
@@ -125,7 +125,7 @@ extension ViewController {
     3. Change player order*/
     func resetGame() {
         self.menuLabel.text = ""
-        self.gameContext.resetGame(columns: SLGameSetings.columns, rows: SLGameSetings.rows, gameType: SLGameSetings.gameType, firstPlayer: true, playerOne: player1, playerTwo: player2)
+        self.gameContext.resetGame(columns: SLGameSettings.columns, rows: SLGameSettings.rows, gameType: SLGameSettings.gameType, firstPlayer: true, playerOne: player1, playerTwo: player2)
     }
     
 /*This is to check if you want to setup the whole view or not*/
@@ -133,7 +133,7 @@ extension ViewController {
         if(!gameEnvironmentInitialsed) {
             self.setupGameEnvironment()
         }else {
-            SLGameSetings.gameType = type
+            SLGameSettings.gameType = type
             self.resetGame()
         }
         self.gameMenu.isHidden = true
@@ -156,17 +156,17 @@ extension ViewController {
         SLPocket.addConstraints(leading: 0, trailing: 0, height: 300, view: holder)
         
         
-        let twoPlayersButton = SLPocket.getButton(title: "2 PLAYER", background: SLGameSetings.lightGreenColor, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        let twoPlayersButton = SLPocket.getButton(title: "2 PLAYER", background: SLGameSettings.lightGreenColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         twoPlayersButton.addTarget(self, action: #selector(twoPlayersTapped), for: .touchDown)
         holder.addSubview(twoPlayersButton)
         SLPocket.addConstraints(leading: 0, trailing: 0, bottom: 0, height: 100, view: twoPlayersButton)
         
-        let onePlayersButton = SLPocket.getButton(title: "1 PLAYER", background: SLGameSetings.lightPurpleColor, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        let onePlayersButton = SLPocket.getButton(title: "1 PLAYER", background: SLGameSettings.lightPurpleColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         onePlayersButton.addTarget(self, action: #selector(onePlayersTapped), for: .touchDown)
         holder.addSubview(onePlayersButton)
         SLPocket.addConstraints(leading: 0, trailing: 0, bottom: -100, height: 100, view: onePlayersButton)
         
-        self.menuLabel = SLPocket.getLabel(textColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        self.menuLabel = SLPocket.getLabel(textColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         holder.addSubview(self.menuLabel)
         self.menuLabel.text = ""
         SLPocket.addConstraints(leading: 0, trailing: 0, top: 0, bottom: -200, view: self.menuLabel)
@@ -195,13 +195,13 @@ extension ViewController {
     func setupCoins(x: Float, y:Float) {
         var x = x
         var y = y
-        for row in 0..<SLGameSetings.rows {
+        for row in 0..<SLGameSettings.rows {
             
             x=self.userInterfaceContext.outerPadding
-            for col in 0..<SLGameSetings.columns {
+            for col in 0..<SLGameSettings.columns {
                 
                 let coin = SLCircle(x: x+(self.userInterfaceContext.blockDimension/2), y: y-(self.userInterfaceContext.blockDimension/2), radius: 0.08)
-                coin.color = SLGameSetings.defaultCoinColor
+                coin.color = SLGameSettings.defaultCoinColor
                 canvas.addNode(shape: coin)
                 x+=(self.userInterfaceContext.innerPadding+self.userInterfaceContext.blockDimension)
                 self.gameContext.coins[col][row] = coin
@@ -216,7 +216,7 @@ extension ViewController {
     2. Add it to the canvas*/
     func setupCursor(x: Float, y:Float) {
         self.cursor = SLCursor(x: self.canvasInfo.centerX, y: y-15, radius: 20)
-        cursor!.color = SLGameSetings.cursorColor
+        cursor!.color = SLGameSettings.cursorColor
         canvas.addNode(shape: cursor!)
     }
     
@@ -238,12 +238,12 @@ extension ViewController {
         self.canvas.addSubview(holder)
         SLPocket.addConstraints(leading: 0, trailing: 0, bottom: -60, height: 100, view: holder)
         
-        let restartButton = SLPocket.getButton(title: "RESTART", background: player1.color, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        let restartButton = SLPocket.getButton(title: "RESTART", background: player1.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         holder.addSubview(restartButton)
         restartButton.addTarget(self, action: #selector(restartTapped), for: .touchDown)
         SLPocket.addConstraints(leading: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: restartButton)
         
-        let menuButton = SLPocket.getButton(title: "MENU", background: player2.color, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        let menuButton = SLPocket.getButton(title: "MENU", background: player2.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         menuButton.addTarget(self, action: #selector(menuTapped), for: .touchDown)
         holder.addSubview(menuButton)
         SLPocket.addConstraints(trailing: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: menuButton)
@@ -259,12 +259,12 @@ extension ViewController {
         self.canvas.addSubview(holder)
         SLPocket.addConstraints(leading: 0, trailing: 0, top: 60, height: 100, view: holder)
         
-        player1Button = SLPocket.getButton(title: player1.name, background: player1.color, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        player1Button = SLPocket.getButton(title: player1.name, background: player1.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         holder.addSubview(player1Button)
         player1Button.addTarget(self, action: #selector(restartTapped), for: .touchDown)
         SLPocket.addConstraints(leading: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: player1Button)
         
-        player2Button = SLPocket.getButton(title: player2.name, background: player2.color, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        player2Button = SLPocket.getButton(title: player2.name, background: player2.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         player2Button.addTarget(self, action: #selector(menuTapped), for: .touchDown)
         holder.addSubview(player2Button)
         SLPocket.addConstraints(trailing: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: player2Button)
@@ -282,7 +282,7 @@ extension ViewController {
     //Calculate block width
         self.userInterfaceContext.columnWidth = self.canvasInfo.width - (2*self.userInterfaceContext.outerPadding)
     //Get block width
-        self.userInterfaceContext.blockDimension = self.userInterfaceContext.columnWidth - (Float(SLGameSetings.columns-1)*self.userInterfaceContext.innerPadding)
+        self.userInterfaceContext.blockDimension = self.userInterfaceContext.columnWidth - (Float(SLGameSettings.columns-1)*self.userInterfaceContext.innerPadding)
         self.userInterfaceContext.blockDimension/=self.gameContext.cols
     //Get block height
         self.userInterfaceContext.columnHeight = (self.userInterfaceContext.blockDimension*self.gameContext.rows) + ((self.gameContext.rows-1)*self.userInterfaceContext.innerPadding)
@@ -294,7 +294,7 @@ extension ViewController {
     //Setup blocks
         for _ in 0..<Int(self.gameContext.cols) {
             let s1 = SLSquare(x: x, y: y, width: self.userInterfaceContext.columnWidth, height: self.userInterfaceContext.columnHeight)
-            s1.color = SLGameSetings.columnHighlightColor
+            s1.color = SLGameSettings.columnHighlightColor
             canvas.addNode(shape: s1)
             self.gameContext.columnBlocksCenterPositions.append(x+(self.userInterfaceContext.columnWidth/2))
             self.canvasBlocks.append(s1)
@@ -324,7 +324,7 @@ extension ViewController {
     1. Call reset function
     2. *Also make sure to clear the game label  */
     @objc func onePlayersTapped() {
-        self.startNewGame(type: .TwoPlayer)
+        self.startNewGame(type: .SinglePlayer)
     }
 
 /*This function is used get game type menus
@@ -358,7 +358,7 @@ extension ViewController {
             return
         }
         
-        cursor.color = SLGameSetings.cursorHighlightColor
+        cursor.color = SLGameSettings.cursorHighlightColor
         cursor.x = self.gameContext.columnBlocksCenterPositions[counter] //shape.x+(self.columnWidth/2)
     }
     
@@ -379,7 +379,7 @@ extension ViewController {
             return
         }
         
-        cursor.color = SLGameSetings.cursorHighlightColor
+        cursor.color = SLGameSettings.cursorHighlightColor
         cursor.x = self.gameContext.columnBlocksCenterPositions[counter]
     }
     
@@ -391,7 +391,7 @@ extension ViewController {
         guard let cursor = self.cursor else {
             return
         }
-        cursor.color = SLGameSetings.cursorColor
+        cursor.color = SLGameSettings.cursorColor
         
         guard let location = touches.first?.location(in: self.view) else {
             return
@@ -404,7 +404,7 @@ extension ViewController {
     //Get row and column
         //let row = self.gameContext.currentCoinsColumnTopPositions[column]
         
-        guard let turn = self.updatePlay(column: column, player: self.gameContext.currentPlayer) else {
+        /*guard let turn = self.updatePlay(column: column, player: self.gameContext.currentPlayer) else {
             return
         }
         
@@ -414,12 +414,37 @@ extension ViewController {
         
         if self.gameContext.playerOneTurn {
             self.gameContext.currentPlayer = self.gameContext.playerOne
+        }*/
+        
+        self.updatePlay(column: column, player: self.gameContext.currentPlayer)
+        
+        
+        if self.gameContext.completedMove {
+            if self.gameContext.gameType == SLGameType.SinglePlayer {
+                
+                guard let column = self.gameContext.makeAIPlay() else{
+                    return
+                }
+                
+                self.updatePlay(column: column, player: self.gameContext.playerTwo)
+                
+            }else {
+                self.gameContext.playerOneTurn.toggle()
+                
+                self.gameContext.currentPlayer = self.gameContext.playerTwo
+                
+                if self.gameContext.playerOneTurn {
+                    self.gameContext.currentPlayer = self.gameContext.playerOne
+                }
+            }
         }
     
     }
     
     
     @discardableResult func updatePlay(column:Int, player:SLPlayer) -> Bool?{
+        
+        self.gameContext.completedMove = false
         
         //self.gameContext.playerOneTurn = false
         
@@ -448,11 +473,14 @@ extension ViewController {
             self.gameContext.topPositions[col] = nil
         }
         
-        //self.gameContext.playerOneTurn = true
+//SML
+        self.gameContext.completedMove = true
+
         
     //Check if the USER won or not
         if self.gameContext.winnerCheck(x: column, y: row, player: player) {
             
+
             var message = "\(player.name ?? " ") WON!!!"
             //Check if it is draw or not
             if(self.gameContext.coinsCounter == 30) {
@@ -463,6 +491,8 @@ extension ViewController {
             self.gameMenu.isHidden = false
             return nil
         }
+        
+        //self.gameContext.completedMove = true
         
         return true
     }

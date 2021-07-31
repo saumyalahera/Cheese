@@ -39,7 +39,7 @@ class SLGameContext {
     var topPositions = [Int:Int]()
     
 /*Game type*/
-    //var gameType:SLGameType!
+    var gameType:SLGameType!
     
 /*Coins*/
     var coins = [[SLCircle?]]()// = Array(repeating: Array(repeating: nil, count: 7), count: 6)
@@ -68,7 +68,7 @@ class SLGameContext {
                 guard let coin = self.coins[col][row] else {
                     continue
                 }
-                coin.color = SLGameSetings.defaultCoinColor
+                coin.color = SLGameSettings.defaultCoinColor
                 coin.name = nil
             }
         }
@@ -78,7 +78,7 @@ class SLGameContext {
         self.playerOne = playerOne
         self.playerTwo = playerTwo
         self.playerOneTurn = firstPlayer
-        //self.gameType = gameType
+        self.gameType = gameType
         self.currentPlayer = self.playerOne
         if !firstPlayer {
             self.currentPlayer = self.playerTwo
@@ -108,7 +108,7 @@ class SLGameContext {
        
         if self.horizontalCheck(x: x, y: y, maxCol: maxCol) || self.verticalCheck(x: x, y: y, maxRow: maxRow) {
             player.score+=1
-            print("\(player.name) won! Player One: \(playerOne.score), Player Two: \(playerTwo.score)")
+            //print("\(player.name) won! Player One: \(playerOne.score), Player Two: \(playerTwo.score)")
             return true
         }
         
