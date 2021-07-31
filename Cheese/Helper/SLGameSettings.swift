@@ -22,13 +22,27 @@ public class SLGameSetings: NSObject {
     
     public static var cursorColor = UIColor.white
     
-    public static var cursorHighlightColor = UIColor.systemBlue
-
-    public static var gameType = SLGameType.SinglePlayer
+    public static var cursorHighlightColor = UIColor.black
+//SML
+    public static var gameType = SLGameType.TwoPlayer
     
     public static var playerOneCoinColor = UIColor.red
     
-    public static var playerTwoCoinColor = UIColor.black
+    public static var playerTwoCoinColor = UIColor.yellow
     
     public static var defaultCoinColor = UIColor.white
+    
+    public static var fontName = "Avenir Next Bold"
+    
+    public static var fontColor = UIColor.black
+    
+    public static var lightPurpleColor = UIColor(red: 195/255, green: 189/255, blue: 232/255, alpha: 1)
+    
+    public static var lightGreenColor = UIColor(red: 196/255, green: 246/255, blue: 201/255, alpha: 1)
+    
+    public static var columns = 7
+    
+    public static var rows = 6
+    
+    
 }

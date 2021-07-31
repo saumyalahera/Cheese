@@ -17,6 +17,12 @@ class ViewController: UIViewController {
 
 //MARK: - Cursor and Column blocks Properties
     
+    ///Create UI elements
+    var gameMenu:UIView!
+    var player2Button:UIButton!
+    var player1Button:UIButton!
+    var menuLabel:UILabel!
+    
     /*These help us build the columns because they work with touch methods to track the selected column number*/
     ///They are needed to calculate block size
     var userInterfaceContext = SLUserInterfaceContext()
@@ -35,7 +41,7 @@ class ViewController: UIViewController {
     var canvasInfo = SLCanvasInfo(centerX: 0, centerY: 0, width: 0, height: 0)
     
     ///GAME Context
-    var gameContext:SLGameContext!// = SLGameContext(rows: 6, columns: 7,)
+    var gameContext:SLGameContext!
     
     ///Setup players
     var player1 = SLPlayer(name: "player", color: SLGameSetings.playerOneCoinColor, score: 0)
@@ -45,53 +51,104 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-    //Get command Queue and device because withput these objects, engine should not ignite
+        //Get command Queue and device because withput these objects, engine should not ignite
         guard let device = SLPocket.createDevice(), let queue = SLPocket.createCommandQueue(device: device) else {
             return
         }
         SLTools.setupMetalComponents(device: device, queue: queue)
         
-   //Setup Canvas
+        //Setup Canvas
         self.setupCanvas()
         
-    //Setup Game
+        //Setup Game
         self.setupGame()
+        
+        //Setup other views
+        self.setupOtherViews()
     }
 }
 
 //MARK: - Game Logic
+/*This extension is used for game logic. It is to setup game, game context and other stuff*/
 extension ViewController {
-    func setupGame() {
     
-        self.gameContext = SLGameContext(columns: 7, rows: 6, gameType: .TwoPlayer, firstPlayer: true, playerOne: player1,playerTwo: player2)
+/*This functio is used to setup game
+    1. Get the context
+    2. Setup canvas
+    3. Setup cursor and other UI elements*/
+    func setupGame() {
+        //Get the game menu on
+        self.setupGameMenu()
         
-    //Create canvas blocks, they are used to highlight columns and guides player to drop coins
+        self.gameContext = SLGameContext(columns: SLGameSetings.columns, rows: SLGameSetings.rows, gameType: SLGameSetings.gameType, firstPlayer: true, playerOne: player1,playerTwo: player2)
+        
+        //Create canvas blocks, they are used to highlight columns and guides player to drop coins
         self.createCanvasBlocks()
             
-    //Create a grid
+        //Create a grid
         let x = self.userInterfaceContext.outerPadding
         var y = (self.canvasInfo.centerY)+(self.userInterfaceContext.columnHeight/2)
             
-    //Add All the coins holder
+        //Add All the coins holder
         self.setupCoins(x: x, y: y)
             
-    //Create a cursor that be used to guide which column the user has pressed
+        //Create a cursor that be used to guide which column the user has pressed
         y = (self.canvasInfo.centerY)-(self.userInterfaceContext.columnHeight/2)
         self.setupCursor(x: x, y: y)
-        
+    
         //self.resetGame()
     }
     
+/*This function is to reset game
+    1. Set columns rows
+    2. Set game type
+    3. Change player order*/
     func resetGame(text: String) {
-        self.gameContext.resetGame(columns: 7, rows: 6, gameType: .TwoPlayer, firstPlayer: true, playerOne: player1, playerTwo: player2)
-        print("current player: \(self.gameContext.currentPlayer.name) and color: \(self.gameContext.currentPlayer.color)")
+        self.gameContext.resetGame(columns: SLGameSetings.columns, rows: SLGameSetings.rows, gameType: SLGameSetings.gameType, firstPlayer: true, playerOne: player1, playerTwo: player2)
     }
 }
 
-//MARK: - Coins Setup and Other Views setup
+//MARK: - Game UI Elements
+/*This extension is used to define game ui elements. Elements like canvas */
 extension ViewController {
     
-/*Canvas where all the objects are rendered*/
+/*Create a menu view that will display game types and you can choose which game to play*/
+    
+    func setupGameMenu() {
+        self.gameMenu = SLPocket.getView(color: .white)
+        self.view.addSubview(self.gameMenu)
+        SLPocket.addConstraints(leading: 0, trailing: 0, top: 0, bottom: 0, view: self.gameMenu)
+        
+        let holder = SLPocket.getView(color: .white)
+        self.gameMenu.addSubview(holder)
+        SLPocket.addConstraints(leading: 0, trailing: 0, height: 400, view: holder)
+        
+        let cancelButton = SLPocket.getButton(title: "CANCEL", background: SLGameSetings.lightPurpleColor, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        cancelButton.addTarget(self, action: #selector(cancelMenuTapped), for: .touchDown)
+        holder.addSubview(cancelButton)
+        SLPocket.addConstraints(leading: 0, trailing: 0, bottom: 0, height: 100, view: cancelButton)
+        
+        let twoPlayersButton = SLPocket.getButton(title: "2 PLAYER", background: SLGameSetings.lightGreenColor, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        twoPlayersButton.addTarget(self, action: #selector(twoPlayersTapped), for: .touchDown)
+        holder.addSubview(twoPlayersButton)
+        SLPocket.addConstraints(leading: 0, trailing: 0, bottom: -100, height: 100, view: twoPlayersButton)
+        
+        let onePlayersButton = SLPocket.getButton(title: "1 PLAYER", background: SLGameSetings.lightPurpleColor, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        onePlayersButton.addTarget(self, action: #selector(onePlayersTapped), for: .touchDown)
+        holder.addSubview(onePlayersButton)
+        SLPocket.addConstraints(leading: 0, trailing: 0, bottom: -200, height: 100, view: onePlayersButton)
+        
+        self.menuLabel = SLPocket.getLabel(textColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        holder.addSubview(self.menuLabel)
+        self.menuLabel.text = "Saumya Lahera"
+        SLPocket.addConstraints(leading: 0, trailing: 0, top: 0, bottom: -300, view: self.menuLabel)
+        
+    }
+    
+/*This function is used to setup Canvas
+    1. Get the context
+    2. Setup canvas
+    3. Setup cursor and other UI elements*/
     func setupCanvas() {
         
         canvas = SLCanvas(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
@@ -99,17 +156,21 @@ extension ViewController {
         self.view.addSubview(canvas)
         SLPocket.addConstraints(leading: 0, trailing: 0, top: 0, bottom: 0, view: canvas)
         
-    //Update canvas information
+        //Update canvas information
         self.canvasInfo = SLCanvasInfo(centerX: Float(self.view.center.x), centerY: Float(self.view.center.y), width: Float(self.view.frame.width), height: Float(self.view.frame.height))
     }
     
+/*This function is used to setup Coins
+    1. Setup Coins
+    2. Setup canvas
+    3. Setup cursor and other UI elements*/
     func setupCoins(x: Float, y:Float) {
         var x = x
         var y = y
-        for row in 0..<Int(self.gameContext.rows) {
+        for row in 0..<SLGameSetings.rows {
             
             x=self.userInterfaceContext.outerPadding
-            for col in 0..<Int(self.gameContext.cols) {
+            for col in 0..<SLGameSetings.columns {
                 
                 let coin = SLCircle(x: x+(self.userInterfaceContext.blockDimension/2), y: y-(self.userInterfaceContext.blockDimension/2), radius: 0.08)
                 coin.color = SLGameSetings.defaultCoinColor
@@ -122,14 +183,67 @@ extension ViewController {
         }
     }
     
+/*This function is used setup cursor. It helps to keep track of your tap position
+    1. Init cursor
+    2. Add it to the canvas*/
     func setupCursor(x: Float, y:Float) {
         self.cursor = SLCursor(x: self.canvasInfo.centerX, y: y-15, radius: 20)
-        cursor!.color = .white
+        cursor!.color = SLGameSetings.cursorColor
         canvas.addNode(shape: cursor!)
+    }
+    
+/*This function sets up top and bottom bar
+    1. Top bar holds player1 and player2
+    2. Bottom bar holds restart and menu button*/
+    func setupOtherViews() {
+        self.setupTopBar()
+        self.setupBottomBar()
+    }
+    
+/*This bar holds buttons
+    1. Create Restart buttons
+    2. Create Menu buttons
+    3. Add Autolayout constraints*/
+    func setupBottomBar() {
+        
+        let holder = SLPocket.getView(color: .white)
+        self.canvas.addSubview(holder)
+        SLPocket.addConstraints(leading: 10, trailing: -10, bottom: -60, height: 100, view: holder)
+        
+        let restartButton = SLPocket.getButton(title: "RESTART", background: player1.color, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        holder.addSubview(restartButton)
+        restartButton.addTarget(self, action: #selector(restartTapped), for: .touchDown)
+        SLPocket.addConstraints(leading: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: restartButton)
+        
+        let menuButton = SLPocket.getButton(title: "MENU", background: player2.color, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        menuButton.addTarget(self, action: #selector(menuTapped), for: .touchDown)
+        holder.addSubview(menuButton)
+        SLPocket.addConstraints(trailing: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: menuButton)
+    }
+    
+/*This func sets top bar that holds players info
+    1. Create player1 button
+    2. Create player2 button
+    2. Add auto layout constraints*/
+    func setupTopBar() {
+        
+        let holder = SLPocket.getView(color: .white)
+        self.canvas.addSubview(holder)
+        SLPocket.addConstraints(leading: 10, trailing: -10, top: 60, height: 100, view: holder)
+        
+        player1Button = SLPocket.getButton(title: player1.name, background: player1.color, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        holder.addSubview(player1Button)
+        player1Button.addTarget(self, action: #selector(restartTapped), for: .touchDown)
+        SLPocket.addConstraints(leading: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: player1Button)
+        
+        player2Button = SLPocket.getButton(title: player2.name, background: player2.color, titleColor: SLGameSetings.fontColor, font: UIFont(name: SLGameSetings.fontName, size: 18)!)
+        player2Button.addTarget(self, action: #selector(menuTapped), for: .touchDown)
+        holder.addSubview(player2Button)
+        SLPocket.addConstraints(trailing: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: player2Button)
     }
 }
 
-//MARK: - Canvas Column Blocks - WILL FINISH IT SOON
+//MARK: - Canvas Column Blocks
 /**They are used to create highlight effect. NOT COMPLETE**/
 extension ViewController {
     
@@ -159,6 +273,45 @@ extension ViewController {
     }
 }
 
+
+//MARK: - Click Methods
+extension ViewController {
+    
+/*This funct is used to restart the game.
+    1. Call reset function
+    2. *Also make sure to clear the game label  */
+    @objc func restartTapped() {
+        print("Reset the damn game")
+        self.resetGame(text: " ")
+    }
+
+/*This function is used get game type menus
+    1. Show the Menu*/
+    @objc func menuTapped() {
+        print("Pop up the menu")
+        self.gameMenu.isHidden = false
+    }
+    
+/*This funct is used to restart the game.
+    1. Call reset function
+    2. *Also make sure to clear the game label  */
+    @objc func onePlayersTapped() {
+        print("One player tapped")
+        self.resetGame(text: " ")
+    }
+
+/*This function is used get game type menus
+    1. Show the Menu*/
+    @objc func twoPlayersTapped() {
+        print("Two player tapped")
+    }
+    
+/*This function will hide the menu view*/
+    @objc func cancelMenuTapped() {
+        print("Cancel menu")
+        self.gameMenu.isHidden = true
+    }
+}
 
 //MARK: - Cursor Extension
 /** This extension is used to keep track of cursor and it */

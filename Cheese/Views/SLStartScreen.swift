@@ -12,6 +12,9 @@ import UIKit
 /**This **/
 class SLStartScreen: UIView {
     
-    //var 
+    //var
+    var holder:UIView!
+    var title:UILabel!
+    var button:UILabel!
     
 }

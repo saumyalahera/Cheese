@@ -340,8 +340,32 @@ extension SLPocket {
     
 }
 
+//MARK: - AUutolayout Methods
 /**This class is to add Autolayout constraints**/
 extension SLPocket {
+    
+    /*class func addConstraints(leading: CGFloat?, trailing: CGFloat?, top: CGFloat?, bottom: CGFloat?, height: CGFloat?, width: CGFloat?, heightMultiplier:CGFloat?, widthMultiplier:CGFloat?, centerX:CGFloat?, centerY:CGFloat?, view:UIView) {
+        guard let superview = view.superview else {
+            return
+        }
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            if(leading != nil) {
+            view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading)
+            }
+            if let trailing = leading {
+               
+            }
+           
+            
+            view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading),
+            view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing),
+            view.topAnchor.constraint(equalTo: superview.topAnchor, constant: top),
+            view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom)
+        ])
+    }*/
     
 /**This is used to make **/
    class func addConstraints(leading:CGFloat, trailing:CGFloat, top:CGFloat, bottom:CGFloat, view:UIView) {
@@ -357,6 +381,118 @@ extension SLPocket {
             view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom)
         ])
         
+    }
+    
+    class func addConstraints(leading:CGFloat, trailing:CGFloat, bottom:CGFloat, height:CGFloat, view:UIView) {
+         guard let superview = view.superview else {
+             return
+         }
+         view.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading),
+             view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing),
+             view.heightAnchor.constraint(equalToConstant: height),
+             view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom)
+         ])
+     }
+    
+    class func addConstraints(leading:CGFloat, top:CGFloat, bottom:CGFloat, widthMultiplier: CGFloat, view:UIView) {
+         guard let superview = view.superview else {
+             return
+         }
+         view.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading),
+             view.topAnchor.constraint(equalTo: superview.topAnchor, constant: top),
+             view.widthAnchor.constraint(equalTo: superview.widthAnchor, multiplier: widthMultiplier),
+             view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom)
+         ])
+     }
+    
+    class func addConstraints(trailing:CGFloat, top:CGFloat, bottom:CGFloat, widthMultiplier: CGFloat, view:UIView) {
+         guard let superview = view.superview else {
+             return
+         }
+         view.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing),
+             view.topAnchor.constraint(equalTo: superview.topAnchor, constant: top),
+             view.widthAnchor.constraint(equalTo: superview.widthAnchor, multiplier: widthMultiplier),
+             view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom)
+         ])
+     }
+    
+    class func addConstraints(leading:CGFloat, trailing:CGFloat, top:CGFloat, height: CGFloat, view:UIView) {
+         guard let superview = view.superview else {
+             return
+         }
+         view.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+             view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing),
+             view.topAnchor.constraint(equalTo: superview.topAnchor, constant: top),
+             view.heightAnchor.constraint(equalToConstant: height),
+             view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading)
+         ])
+     }
+    
+    class func addConstraints(height:CGFloat, width:CGFloat, view:UIView) {
+         guard let superview = view.superview else {
+             return
+         }
+         view.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: height),
+            view.widthAnchor.constraint(equalToConstant: width),
+            view.centerXAnchor.constraint(equalTo: superview.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: superview.centerYAnchor)
+         ])
+     }
+    
+    class func addConstraints(leading: CGFloat, trailing: CGFloat, height:CGFloat, view:UIView) {
+         guard let superview = view.superview else {
+             return
+         }
+         view.translatesAutoresizingMaskIntoConstraints = false
+         
+         NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: height),
+            view.centerXAnchor.constraint(equalTo: superview.centerXAnchor),
+            view.centerYAnchor.constraint(equalTo: superview.centerYAnchor),
+            view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading),
+            view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing)
+         ])
+     }
+}
+
+//MARK: - UI Elements
+/*This is going to hold label*/
+extension SLPocket {
+    class func getButton(title: String, background: UIColor, titleColor:UIColor, font: UIFont) -> UIButton{
+        let button = UIButton()
+        button.setTitle(title, for: .normal)
+        button.backgroundColor = background
+        button.setTitleColor(titleColor, for: .normal)
+        button.titleLabel?.font = font
+        return button
+    }
+    
+    class func getView(color: UIColor) -> UIView{
+        let view = UIView()
+        view.backgroundColor = color
+        return view
+    }
+    
+    class func getLabel(textColor:UIColor, font:UIFont) -> UILabel{
+        let label = UILabel()
+        label.font = font
+        label.textAlignment = .center
+        label.textColor = textColor
+        return label
     }
 }
 
