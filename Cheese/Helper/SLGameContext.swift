@@ -105,15 +105,12 @@ class SLGameContext {
         let maxRow = Int(self.rows)-1
         let maxCol = Int(self.cols)-1
         
-        if self.downDiagonalCheck(x: x, y: y) {
-            print("Winner bitch!")
-        }
 
-        /*if self.horizontalCheck(x: x, y: y, maxCol: maxCol) || self.verticalCheck(x: x, y: y, maxRow: maxRow) || self.upDiagonalCheck(x: x, y: y) {
+        if self.horizontalCheck(x: x, y: y, maxCol: maxCol) || self.verticalCheck(x: x, y: y, maxRow: maxRow) || self.upDiagonalCheck(x: x, y: y) || self.downDiagonalCheck(x: x, y: y) {
             player.score+=1
-            print("\(player.name) won! Player One: \(playerOne.score), Player Two: \(playerTwo.score)")
+            //print("\(player.name) won! Player One: \(playerOne.score), Player Two: \(playerTwo.score)")
             return true
-        }*/
+        }
         
         if(self.coinsCounter >= Int(self.rows*self.cols)) {
             self.coinsCounter = 30
@@ -139,13 +136,10 @@ class SLGameContext {
         var ix = p1.x-1
         var iy = p1.y+1
                 
-        print("min: \(p1), max: \(p2), iterations: \(iterations)")
         //Iterate
         for _ in 0..<iterations {
             ix+=1
             iy-=1
-            print("(\(ix),\(iy)), (\(ix+1),\(iy-1)), (\(ix+2),\(iy-2)), (\(ix+3),\(iy-3))")
-                    
             guard let c1 = self.coins[ix][iy]?.name, let c2 = self.coins[ix+1][iy-1]?.name, let c3 = self.coins[ix+2][iy-2]?.name, let c4 = self.coins[ix+3][iy-3]?.name else {
                 continue
             }
@@ -173,13 +167,11 @@ class SLGameContext {
         var ix = p1.x-1
         var iy = p1.y-1
             
-        print("min: \(p1), max: \(p2), iterations: \(iterations)")
     //Iterate
         for _ in 0..<iterations {
             ix+=1
             iy+=1
-            print("(\(ix),\(iy)), (\(ix+1),\(iy+1)), (\(ix+2),\(iy+2)), (\(ix+3),\(iy+3))")
-                
+           
             guard let c1 = self.coins[ix][iy]?.name, let c2 = self.coins[ix+1][iy+1]?.name, let c3 = self.coins[ix+2][iy+2]?.name, let c4 = self.coins[ix+3][iy+3]?.name else {
                 continue
              }
@@ -202,14 +194,13 @@ class SLGameContext {
     //Also get the iteration number because you dont want to go through all the elements in the range
         var iterations = (maxColumn - minColumn) - patternCount
         iterations = max(0, iterations)
-        print("min: \(minColumn), max: \(maxColumn), iterations: \(iterations)")
     
     //This is to keep track of index
         var ix = minColumn-1
         
     //Iterate and check
         for _ in 0...iterations {
-            //print("c")
+            
             ix+=1
             guard let c1 = self.coins[ix][y]?.name, let c2 = self.coins[ix+1][y]?.name, let c3 = self.coins[ix+2][y]?.name, let c4 = self.coins[ix+3][y]?.name else {
                 continue
@@ -283,13 +274,7 @@ class SLGameContext {
 /*This function is to get maxcoin from left*/
     func getDownMinCoin(X: Int, Y:Int) -> (x: Int, y:Int) {
         
-        /*var xk = X - patternCount
-        xk = max(0, xk)
-        
-        xk = X - xk
-        
-        return (X - xk, Y + xk)*/
-        
+    /*The logic is to get the minimum distant element and add/subtract with x and y coordinate*/
         let x = max(X - 0, X - patternCount)
         let y = min((Int(rows-1)-Y),Y + patternCount)
         
@@ -301,12 +286,7 @@ class SLGameContext {
     
     func getDownMaxCoin(X: Int, Y:Int) -> (x: Int, y:Int)  {
         
-        /*var yk = Y - patternCount
-        
-        yk = max(0, yk)
-        yk = Y - yk
-        
-        return (X + yk, Y - yk)*/
+    /*The logic is to get the minimum distant element and add/subtract with x and y coordinate*/
         let x = min((Int(cols-1)-X),X + patternCount)
         let y = max(Y - 0, Y - patternCount)
         
