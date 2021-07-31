@@ -137,6 +137,7 @@ extension ViewController {
             self.resetGame()
         }
         self.gameMenu.isHidden = true
+        print("\(self.player1.name ?? ""): \(self.player1.score ?? 0)")
     }
 }
 
@@ -259,15 +260,15 @@ extension ViewController {
         self.canvas.addSubview(holder)
         SLPocket.addConstraints(leading: 0, trailing: 0, top: 60, height: 100, view: holder)
         
-        player1Button = SLPocket.getButton(title: player1.name, background: player1.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
-        holder.addSubview(player1Button)
-        player1Button.addTarget(self, action: #selector(restartTapped), for: .touchDown)
-        SLPocket.addConstraints(leading: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: player1Button)
+        self.player1Button = SLPocket.getButton(title: player1.name, background: player1.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
+        holder.addSubview(self.player1Button)
+        self.player1Button.addTarget(self, action: #selector(restartTapped), for: .touchDown)
+        SLPocket.addConstraints(leading: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: self.player1Button)
         
-        player2Button = SLPocket.getButton(title: player2.name, background: player2.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
-        player2Button.addTarget(self, action: #selector(menuTapped), for: .touchDown)
-        holder.addSubview(player2Button)
-        SLPocket.addConstraints(trailing: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: player2Button)
+        self.player2Button = SLPocket.getButton(title: player2.name, background: player2.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
+        self.player2Button.addTarget(self, action: #selector(menuTapped), for: .touchDown)
+        holder.addSubview(self.player2Button)
+        SLPocket.addConstraints(trailing: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: self.player2Button)
     }
 }
 
