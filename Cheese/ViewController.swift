@@ -137,7 +137,10 @@ extension ViewController {
             self.resetGame()
         }
         self.gameMenu.isHidden = true
-        print("\(self.player1.name ?? ""): \(self.player1.score ?? 0)")
+    
+    //Update score
+        self.player1Button.setTitle("\(self.player1.name ?? ""): \(self.player1.score ?? 0)", for: .normal)
+        self.player2Button.setTitle("\(self.player2.name ?? ""): \(self.player2.score ?? 0)", for: .normal)
     }
 }
 
