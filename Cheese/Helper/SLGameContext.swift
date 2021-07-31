@@ -105,12 +105,15 @@ class SLGameContext {
         let maxRow = Int(self.rows)-1
         let maxCol = Int(self.cols)-1
         
+        if self.downDiagonalCheck(x: x, y: y) {
+            print("Winner bitch!")
+        }
 
-        if self.horizontalCheck(x: x, y: y, maxCol: maxCol) || self.verticalCheck(x: x, y: y, maxRow: maxRow) || self.diagonalCheck(x: x, y: y) {
+        /*if self.horizontalCheck(x: x, y: y, maxCol: maxCol) || self.verticalCheck(x: x, y: y, maxRow: maxRow) || self.upDiagonalCheck(x: x, y: y) {
             player.score+=1
             print("\(player.name) won! Player One: \(playerOne.score), Player Two: \(playerTwo.score)")
             return true
-        }
+        }*/
         
         if(self.coinsCounter >= Int(self.rows*self.cols)) {
             self.coinsCounter = 30
@@ -120,12 +123,46 @@ class SLGameContext {
         return false
     }
     
+    
+//MARK: - Diagonal Check
+    
+    func downDiagonalCheck(x: Int, y:Int) -> Bool {
+        //Get two points
+        let p1 = self.getDownMinCoin(X: x, Y: y)
+        let p2 = self.getDownMaxCoin(X: x, Y: y)
+        
+        var iterations = (p2.x - p1.x) - patternCount
+        iterations+=2
+        iterations = max(0, iterations-1)
+        
+        //Index tracker
+        var ix = p1.x-1
+        var iy = p1.y+1
+                
+        print("min: \(p1), max: \(p2), iterations: \(iterations)")
+        //Iterate
+        for _ in 0..<iterations {
+            ix+=1
+            iy-=1
+            print("(\(ix),\(iy)), (\(ix+1),\(iy-1)), (\(ix+2),\(iy-2)), (\(ix+3),\(iy-3))")
+                    
+            guard let c1 = self.coins[ix][iy]?.name, let c2 = self.coins[ix+1][iy-1]?.name, let c3 = self.coins[ix+2][iy-2]?.name, let c4 = self.coins[ix+3][iy-3]?.name else {
+                continue
+            }
+            print("I am here: \([c1,c2,c3,c4])")
+            if Set([c1,c2,c3,c4]).count == 1 {
+                return true
+            }
+        }
+        return false
+    }
+    
 /*Diagonal Check*/
-    func diagonalCheck(x: Int, y:Int) -> Bool {
+    func upDiagonalCheck(x: Int, y:Int) -> Bool {
             
     //Get two points
-        let p1 = self.getMinCoin(X: x, Y: y)
-        let p2 = self.getMaxCoin(X: x, Y: y)
+        let p1 = self.getUpMinCoin(X: x, Y: y)
+        let p2 = self.getUpMaxCoin(X: x, Y: y)
             
     //Calculates number of passes needed
         var iterations = (p2.x - p1.x) - patternCount
@@ -154,6 +191,7 @@ class SLGameContext {
         return false
     }
     
+
 /*Check if horizontal check is valid or not*/
     func horizontalCheck(x: Int, y:Int, maxCol:Int) -> Bool{
     
@@ -210,9 +248,9 @@ class SLGameContext {
         return false
     }
     
-
+//MARK: - Diagonal Points Checks
 /*This will return the first/min diagonal coin*/
-    func getMinCoin(X: Int, Y:Int) -> (x:Int, y:Int){
+    func getUpMinCoin(X: Int, Y:Int) -> (x:Int, y:Int){
         
         var x = X - patternCount
         var y = Y - patternCount
@@ -228,7 +266,7 @@ class SLGameContext {
     }
     
 /*This will return the last/max diagonal coin*/
-    func getMaxCoin(X: Int, Y:Int) -> (x:Int, y:Int){
+    func getUpMaxCoin(X: Int, Y:Int) -> (x:Int, y:Int){
         
         var x = X + patternCount
         var y = Y + patternCount
@@ -241,6 +279,40 @@ class SLGameContext {
         y = k + y
         
         return (x,y)
+    }
+/*This function is to get maxcoin from left*/
+    func getDownMinCoin(X: Int, Y:Int) -> (x: Int, y:Int) {
+        
+        /*var xk = X - patternCount
+        xk = max(0, xk)
+        
+        xk = X - xk
+        
+        return (X - xk, Y + xk)*/
+        
+        let x = max(X - 0, X - patternCount)
+        let y = min((Int(rows-1)-Y),Y + patternCount)
+        
+        let xk = min(x,y)
+        
+        return (X-xk,Y+xk)
+        
+    }
+    
+    func getDownMaxCoin(X: Int, Y:Int) -> (x: Int, y:Int)  {
+        
+        /*var yk = Y - patternCount
+        
+        yk = max(0, yk)
+        yk = Y - yk
+        
+        return (X + yk, Y - yk)*/
+        let x = min((Int(cols-1)-X),X + patternCount)
+        let y = max(Y - 0, Y - patternCount)
+        
+        let xk = min(x,y)
+        
+        return (X+xk,Y-xk)
         
     }
     
