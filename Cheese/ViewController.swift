@@ -4,12 +4,6 @@
 //
 //  Created by Saumya Lahera on 7/28/21.
 //
-/*
- reset
- diagonal
- view controller
- 2 players
- */
 
 import UIKit
 
@@ -19,8 +13,11 @@ class ViewController: UIViewController {
     
     ///Create UI elements
     var gameMenu:UIView!
+    //this is to keep user info
     var player2Button:UIButton!
     var player1Button:UIButton!
+    
+    //Updates game status code
     var menuLabel:UILabel!
     
     /*These help us build the columns because they work with touch methods to track the selected column number*/
@@ -61,16 +58,6 @@ class ViewController: UIViewController {
         
         //Get the game menu on
         self.setupGameMenu()
-        
-        /*
-        //Setup Canvas
-        self.setupCanvas()
-        
-        //Setup Game
-        self.setupGame()
-        
-        //Setup other views
-        self.setupOtherViews()*/
     }
 }
 
@@ -89,9 +76,8 @@ extension ViewController {
         self.setupOtherViews()
         
         self.gameEnvironmentInitialsed = true
-        //It hides after the game view is initiated
+
         self.view.bringSubviewToFront(self.gameMenu)
-        //self.gameMenu.isHidden = true
     }
     
 /*This functio is used to setup game
@@ -343,8 +329,6 @@ extension ViewController {
 /** This extension is used to keep track of cursor and it */
 extension ViewController {
     
-
-
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard self.gameMenu.isHidden else{
             return
@@ -363,7 +347,7 @@ extension ViewController {
         }
         
         cursor.color = SLGameSettings.cursorHighlightColor
-        cursor.x = self.gameContext.columnBlocksCenterPositions[counter] //shape.x+(self.columnWidth/2)
+        cursor.x = self.gameContext.columnBlocksCenterPositions[counter]
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -405,23 +389,7 @@ extension ViewController {
             return
         }
         
-    //Get row and column
-        //let row = self.gameContext.currentCoinsColumnTopPositions[column]
-        
-        /*guard let turn = self.updatePlay(column: column, player: self.gameContext.currentPlayer) else {
-            return
-        }
-        
-        self.gameContext.playerOneTurn.toggle()
-        
-        self.gameContext.currentPlayer = self.gameContext.playerTwo
-        
-        if self.gameContext.playerOneTurn {
-            self.gameContext.currentPlayer = self.gameContext.playerOne
-        }*/
-        
         self.updatePlay(column: column, player: self.gameContext.currentPlayer)
-        
         
         if self.gameContext.completedMove {
             if self.gameContext.gameType == SLGameType.SinglePlayer {
@@ -429,7 +397,6 @@ extension ViewController {
                 guard let column = self.gameContext.makeAIPlay() else{
                     return
                 }
-                
                 self.updatePlay(column: column, player: self.gameContext.playerTwo)
                 
             }else {
@@ -442,20 +409,16 @@ extension ViewController {
                 }
             }
         }
-    
     }
-    
     
     @discardableResult func updatePlay(column:Int, player:SLPlayer) -> Bool?{
         
         self.gameContext.completedMove = false
         
-        //self.gameContext.playerOneTurn = false
-        
         let rowK = Int(self.gameContext.rows)
         let col = column
         let row = self.gameContext.currentCoinsColumnTopPositions[col]
-    //
+    
         if(row >= rowK) {
             return nil
         }
@@ -477,10 +440,8 @@ extension ViewController {
             self.gameContext.topPositions[col] = nil
         }
         
-//SML
         self.gameContext.completedMove = true
 
-        
     //Check if the USER won or not
         if self.gameContext.winnerCheck(x: column, y: row, player: player) {
             
@@ -495,9 +456,7 @@ extension ViewController {
             self.gameMenu.isHidden = false
             return nil
         }
-        
-        //self.gameContext.completedMove = true
-        
+    
         return true
     }
     
@@ -517,6 +476,5 @@ extension ViewController {
             }
             return nil
         }
-    
 }
 
