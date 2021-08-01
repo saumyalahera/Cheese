@@ -16,14 +16,14 @@ public class SLGameSettings: NSObject {
 //MARK: - Create Colors
     public static var canvasColor = UIColor.white
     
-    public static var columnColor = UIColor.white
+    public static var columnColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
    
     public static var columnHighlightColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)  //224
     
     public static var cursorColor = UIColor.white
     
     public static var cursorHighlightColor = UIColor.black
-//SML
+
     public static var gameType = SLGameType.TwoPlayer
     
     public static var playerOneCoinColor = UIColor(red: 195/255, green: 189/255, blue: 232/255, alpha: 1) //UIColor.red

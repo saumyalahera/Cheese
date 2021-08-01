@@ -43,7 +43,7 @@ public enum SLDiagonalDirection {
     case Down
 }
 
-/**This is the main logic where you only calculate horizontal, vertical and diagonal count**/
+/**This is the main logic where you only calculate horizontal, vertical and diagonal count*/
 class SLPlayer {
     var name: String!
     var color:UIColor!
@@ -56,13 +56,14 @@ class SLPlayer {
     }
 }
 
+/**This class is used to create Canvas that will hold game  coins*/
 class SLUserInterfaceContext {
     
     var outerPadding:Float = 5
     var innerPadding:Float = 3
     var blockDimension:Float = 0
     
-/*This is used for animations, when a player taps, drags columns, they should animate.*/
+    /*This is used for animations, when a player taps, drags columns, they should animate.*/
     var columnWidth:Float = 0
     var columnHeight:Float = 0
     

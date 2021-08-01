@@ -145,7 +145,6 @@ extension ViewController {
         self.gameMenu.addSubview(holder)
         SLPocket.addConstraints(leading: 0, trailing: 0, height: 300, view: holder)
         
-        
         let twoPlayersButton = SLPocket.getButton(title: "2 PLAYER", background: SLGameSettings.lightGreenColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         twoPlayersButton.addTarget(self, action: #selector(twoPlayersTapped), for: .touchDown)
         holder.addSubview(twoPlayersButton)
@@ -283,7 +282,7 @@ extension ViewController {
     //Setup blocks
         for _ in 0..<Int(self.gameContext.cols) {
             let s1 = SLSquare(x: x, y: y, width: self.userInterfaceContext.columnWidth, height: self.userInterfaceContext.columnHeight)
-            s1.color = SLGameSettings.columnHighlightColor
+            s1.color = SLGameSettings.columnColor
             canvas.addNode(shape: s1)
             self.gameContext.columnBlocksCenterPositions.append(x+(self.userInterfaceContext.columnWidth/2))
             self.canvasBlocks.append(s1)
@@ -364,6 +363,7 @@ extension ViewController {
         }
 
         guard let counter = self.getCursorCenterPositionCounter(x: Float(location.x), y: Float(location.y)) else {
+            cursor.color = SLGameSettings.cursorColor
             return
         }
         
@@ -390,7 +390,6 @@ extension ViewController {
         }
         
         self.updatePlay(column: column, player: self.gameContext.currentPlayer)
-        
         if self.gameContext.completedMove {
             if self.gameContext.gameType == SLGameType.SinglePlayer {
                 
@@ -403,9 +402,10 @@ extension ViewController {
                 self.gameContext.playerOneTurn.toggle()
                 
                 self.gameContext.currentPlayer = self.gameContext.playerTwo
-                
+                SLGameSettings.cursorHighlightColor = self.gameContext.playerTwo.color
                 if self.gameContext.playerOneTurn {
                     self.gameContext.currentPlayer = self.gameContext.playerOne
+                    SLGameSettings.cursorHighlightColor = self.gameContext.playerOne.color
                 }
             }
         }

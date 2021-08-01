@@ -82,8 +82,10 @@ class SLGameContext {
         self.playerOneTurn = firstPlayer
         self.gameType = gameType
         self.currentPlayer = self.playerOne
+        SLGameSettings.cursorHighlightColor = self.playerOne.color
         if !firstPlayer {
             self.currentPlayer = self.playerTwo
+            SLGameSettings.cursorHighlightColor = self.playerTwo.color
         }
         self.resetColumns(columns: columns)
     }
