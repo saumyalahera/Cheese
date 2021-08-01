@@ -10,7 +10,6 @@ import UIKit
 class ViewController: UIViewController {
 
 //MARK: - Properties
-    
     ///Create UI elements
     var gameMenu:UIView!
     //this is to keep user info
@@ -117,6 +116,7 @@ extension ViewController {
 /*This is to check if you want to setup the whole view or not*/
     func startNewGame(type: SLGameType) {
         if(!gameEnvironmentInitialsed) {
+            SLGameSettings.gameType = type
             self.setupGameEnvironment()
         }else {
             SLGameSettings.gameType = type
@@ -143,19 +143,24 @@ extension ViewController {
         
         let holder = SLPocket.getView(color: .white)
         self.gameMenu.addSubview(holder)
-        SLPocket.addConstraints(leading: 0, trailing: 0, height: 300, view: holder)
+        SLPocket.addConstraints(leading: -1, trailing: 1, height: 300, view: holder)
         
-        let twoPlayersButton = SLPocket.getButton(title: "2 PLAYER", background: SLGameSettings.lightGreenColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
+        let buttonHolder = SLPocket.getView(color: .white)
+        buttonHolder.layer.borderWidth = 1
+        holder.addSubview(buttonHolder)
+        SLPocket.addConstraints(leading: 0, trailing: 0, bottom: 0, height: 200, view: buttonHolder)
+        
+        let twoPlayersButton = SLPocket.getButton(title: "2 PLAYER", background: SLGameSettings.lightGreenColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 20)!)
         twoPlayersButton.addTarget(self, action: #selector(twoPlayersTapped), for: .touchDown)
-        holder.addSubview(twoPlayersButton)
+        buttonHolder.addSubview(twoPlayersButton)
         SLPocket.addConstraints(leading: 0, trailing: 0, bottom: 0, height: 100, view: twoPlayersButton)
         
-        let onePlayersButton = SLPocket.getButton(title: "1 PLAYER", background: SLGameSettings.lightPurpleColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
+        let onePlayersButton = SLPocket.getButton(title: "1 PLAYER", background: SLGameSettings.lightPurpleColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 20)!)
         onePlayersButton.addTarget(self, action: #selector(onePlayersTapped), for: .touchDown)
-        holder.addSubview(onePlayersButton)
+        buttonHolder.addSubview(onePlayersButton)
         SLPocket.addConstraints(leading: 0, trailing: 0, bottom: -100, height: 100, view: onePlayersButton)
         
-        self.menuLabel = SLPocket.getLabel(textColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
+        self.menuLabel = SLPocket.getLabel(textColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 24)!)
         holder.addSubview(self.menuLabel)
         self.menuLabel.text = ""
         SLPocket.addConstraints(leading: 0, trailing: 0, top: 0, bottom: -200, view: self.menuLabel)
@@ -223,9 +228,10 @@ extension ViewController {
     3. Add Autolayout constraints*/
     func setupBottomBar() {
         
-        let holder = SLPocket.getView(color: .white)
+        let holder = SLPocket.getView(color: .black)
         self.canvas.addSubview(holder)
-        SLPocket.addConstraints(leading: 0, trailing: 0, bottom: -60, height: 100, view: holder)
+        holder.layer.borderWidth = 1
+        SLPocket.addConstraints(leading: -1, trailing: 1, bottom: -60, height: 100, view: holder)
         
         let restartButton = SLPocket.getButton(title: "RESTART", background: player1.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         holder.addSubview(restartButton)
@@ -245,8 +251,9 @@ extension ViewController {
     func setupTopBar() {
         
         let holder = SLPocket.getView(color: .white)
+        holder.layer.borderWidth = 1
         self.canvas.addSubview(holder)
-        SLPocket.addConstraints(leading: 0, trailing: 0, top: 60, height: 100, view: holder)
+        SLPocket.addConstraints(leading: -1, trailing: 1, top: 60, height: 100, view: holder)
         
         self.player1Button = SLPocket.getButton(title: player1.name, background: player1.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         holder.addSubview(self.player1Button)
@@ -451,6 +458,8 @@ extension ViewController {
             }
             print(message)
             self.menuLabel.text = message
+            coin.color = player.color
+            
             self.gameMenu.isHidden = false
             return nil
         }
