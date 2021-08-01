@@ -36,6 +36,13 @@ public enum SLGameType {
     case TwoPlayer
 }
 
+public enum SLDiagonalDirection {
+    case Right
+    case Left
+    case Up
+    case Down
+}
+
 /**This is the main logic where you only calculate horizontal, vertical and diagonal count**/
 class SLPlayer {
     var name: String!
