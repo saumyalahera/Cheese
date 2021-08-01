@@ -10,7 +10,6 @@ import UIKit
 class ViewController: UIViewController {
 
 //MARK: - Properties
-    
     ///Create UI elements
     var gameMenu:UIView!
     //this is to keep user info
@@ -19,6 +18,7 @@ class ViewController: UIViewController {
     
     //Updates game status code
     var menuLabel:UILabel!
+    var inGameLabel:UILabel!
     
     /*These help us build the columns because they work with touch methods to track the selected column number*/
     ///They are needed to calculate block size
@@ -43,7 +43,7 @@ class ViewController: UIViewController {
     var gameEnvironmentInitialsed = false
     
     ///Setup players
-    var player1 = SLPlayer(name: "player", color: SLGameSettings.playerOneCoinColor, score: 0)
+    var player1 = SLPlayer(name: "PLAYER", color: SLGameSettings.playerOneCoinColor, score: 0)
     var player2 = SLPlayer(name: "AI", color: SLGameSettings.playerTwoCoinColor, score: 0)
     
 //MARK: - View Controller Methods
@@ -111,12 +111,14 @@ extension ViewController {
     3. Change player order*/
     func resetGame() {
         self.menuLabel.text = ""
-        self.gameContext.resetGame(columns: SLGameSettings.columns, rows: SLGameSettings.rows, gameType: SLGameSettings.gameType, firstPlayer: true, playerOne: player1, playerTwo: player2)
+        self.inGameLabel.text = ""
+        self.gameContext.resetGame(gameType: SLGameSettings.gameType, firstPlayer: true, playerOne: player1, playerTwo: player2)
     }
     
 /*This is to check if you want to setup the whole view or not*/
     func startNewGame(type: SLGameType) {
         if(!gameEnvironmentInitialsed) {
+            SLGameSettings.gameType = type
             self.setupGameEnvironment()
         }else {
             SLGameSettings.gameType = type
@@ -125,8 +127,8 @@ extension ViewController {
         self.gameMenu.isHidden = true
     
     //Update score
-        self.player1Button.setTitle("\(self.player1.name ?? ""): \(self.player1.score ?? 0)", for: .normal)
-        self.player2Button.setTitle("\(self.player2.name ?? ""): \(self.player2.score ?? 0)", for: .normal)
+        //self.player1Button.setTitle("\(self.player1.name ?? ""): \(self.player1.score ?? 0)", for: .normal)
+        //self.player2Button.setTitle("\(self.player2.name ?? ""): \(self.player2.score ?? 0)", for: .normal)
     }
 }
 
@@ -143,19 +145,24 @@ extension ViewController {
         
         let holder = SLPocket.getView(color: .white)
         self.gameMenu.addSubview(holder)
-        SLPocket.addConstraints(leading: 0, trailing: 0, height: 300, view: holder)
+        SLPocket.addConstraints(leading: -1, trailing: 1, height: 300, view: holder)
         
-        let twoPlayersButton = SLPocket.getButton(title: "2 PLAYER", background: SLGameSettings.lightGreenColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
+        let buttonHolder = SLPocket.getView(color: .white)
+        buttonHolder.layer.borderWidth = 1
+        holder.addSubview(buttonHolder)
+        SLPocket.addConstraints(leading: 0, trailing: 0, bottom: 0, height: 200, view: buttonHolder)
+        
+        let twoPlayersButton = SLPocket.getButton(title: "2 PLAYER", background: SLGameSettings.lightGreenColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 20)!)
         twoPlayersButton.addTarget(self, action: #selector(twoPlayersTapped), for: .touchDown)
-        holder.addSubview(twoPlayersButton)
+        buttonHolder.addSubview(twoPlayersButton)
         SLPocket.addConstraints(leading: 0, trailing: 0, bottom: 0, height: 100, view: twoPlayersButton)
         
-        let onePlayersButton = SLPocket.getButton(title: "1 PLAYER", background: SLGameSettings.lightPurpleColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
+        let onePlayersButton = SLPocket.getButton(title: "1 PLAYER", background: SLGameSettings.lightPurpleColor, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 20)!)
         onePlayersButton.addTarget(self, action: #selector(onePlayersTapped), for: .touchDown)
-        holder.addSubview(onePlayersButton)
+        buttonHolder.addSubview(onePlayersButton)
         SLPocket.addConstraints(leading: 0, trailing: 0, bottom: -100, height: 100, view: onePlayersButton)
         
-        self.menuLabel = SLPocket.getLabel(textColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
+        self.menuLabel = SLPocket.getLabel(textColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 24)!)
         holder.addSubview(self.menuLabel)
         self.menuLabel.text = ""
         SLPocket.addConstraints(leading: 0, trailing: 0, top: 0, bottom: -200, view: self.menuLabel)
@@ -184,10 +191,14 @@ extension ViewController {
     func setupCoins(x: Float, y:Float) {
         var x = x
         var y = y
-        for row in 0..<SLGameSettings.rows {
+        /*var rows = SLGameSettings.rows
+        var cols = SLGameSettings.columns*/
+        let rows = Int(self.gameContext.rows)
+        let cols = Int(self.gameContext.cols)
+        for row in 0..<rows {
             
             x=self.userInterfaceContext.outerPadding
-            for col in 0..<SLGameSettings.columns {
+            for col in 0..<cols {
                 
                 let coin = SLCircle(x: x+(self.userInterfaceContext.blockDimension/2), y: y-(self.userInterfaceContext.blockDimension/2), radius: 0.08)
                 coin.color = SLGameSettings.defaultCoinColor
@@ -223,9 +234,10 @@ extension ViewController {
     3. Add Autolayout constraints*/
     func setupBottomBar() {
         
-        let holder = SLPocket.getView(color: .white)
+        let holder = SLPocket.getView(color: .black)
         self.canvas.addSubview(holder)
-        SLPocket.addConstraints(leading: 0, trailing: 0, bottom: -60, height: 100, view: holder)
+        holder.layer.borderWidth = 1
+        SLPocket.addConstraints(leading: -1, trailing: 1, bottom: -60, height: 100, view: holder)
         
         let restartButton = SLPocket.getButton(title: "RESTART", background: player1.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         holder.addSubview(restartButton)
@@ -245,8 +257,9 @@ extension ViewController {
     func setupTopBar() {
         
         let holder = SLPocket.getView(color: .white)
+        holder.layer.borderWidth = 1
         self.canvas.addSubview(holder)
-        SLPocket.addConstraints(leading: 0, trailing: 0, top: 60, height: 100, view: holder)
+        SLPocket.addConstraints(leading: -1, trailing: 1, top: 60, height: 100, view: holder)
         
         self.player1Button = SLPocket.getButton(title: player1.name, background: player1.color, titleColor: SLGameSettings.fontColor, font: UIFont(name: SLGameSettings.fontName, size: 18)!)
         holder.addSubview(self.player1Button)
@@ -257,6 +270,12 @@ extension ViewController {
         self.player2Button.addTarget(self, action: #selector(menuTapped), for: .touchDown)
         holder.addSubview(self.player2Button)
         SLPocket.addConstraints(trailing: 0, top: 0, bottom: 0, widthMultiplier: 0.5, view: self.player2Button)
+        
+        //make the label
+        self.inGameLabel = SLPocket.getLabel(textColor: .black, font: UIFont(name: SLGameSettings.fontName, size: 24)!)
+        self.inGameLabel.text = ""
+        self.canvas.addSubview(self.inGameLabel)
+        SLPocket.addConstraints(leading: 0, trailing: 0, top: 180, height: 40, view: self.inGameLabel)
     }
 }
 
@@ -323,13 +342,16 @@ extension ViewController {
     
 }
 
-//MARK: - Touch Interactions
-/** This extension is used to keep track of cursor and it */
 extension ViewController {
     
 //MARK: - Touch Methods
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard self.gameMenu.isHidden else{
+            return
+        }
+        
+        //SML
+        guard !self.gameContext.gameEnded else {
             return
         }
         
@@ -354,6 +376,11 @@ extension ViewController {
             return
         }
         
+        //SML
+        guard !self.gameContext.gameEnded else {
+            return
+        }
+        
         guard let cursor = self.cursor else {
             return
         }
@@ -373,6 +400,11 @@ extension ViewController {
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard self.gameMenu.isHidden else{
+            return
+        }
+        
+        //SML
+        guard !self.gameContext.gameEnded else {
             return
         }
         
@@ -448,12 +480,19 @@ extension ViewController {
 
             var message = "\(player.name ?? " ") WON!!!"
             //Check if it is draw or not
-            if(self.gameContext.coinsCounter == 30) {
+            if(self.gameContext.coinsCounter == -1) {
                 message = "IT IS A DRAW!!!"
             }
             print(message)
             self.menuLabel.text = message
-            self.gameMenu.isHidden = false
+            coin.color = player.color
+            self.player1Button.setTitle("\(self.player1.name ?? ""): \(self.player1.score ?? 0)", for: .normal)
+            self.player2Button.setTitle("\(self.player2.name ?? ""): \(self.player2.score ?? 0)", for: .normal)
+            self.gameContext.gameEnded = true
+            //Print who won
+            self.inGameLabel.text = message
+            
+            //self.gameMenu.isHidden = false
             return nil
         }
     

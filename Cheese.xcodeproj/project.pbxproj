@@ -27,6 +27,9 @@
 		41F44BD426B280470011740B /* SLCursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD326B280470011740B /* SLCursor.swift */; };
 		41F44BD626B439C00011740B /* SLGameContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD526B439C00011740B /* SLGameContext.swift */; };
 		41F44BD826B4AA750011740B /* SLStartScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD726B4AA750011740B /* SLStartScreen.swift */; };
+		41F44BDD26B665D60011740B /* Tourney.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F44BDB26B665D60011740B /* Tourney.ttf */; };
+		41F44BDE26B665D60011740B /* Tourney-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F44BDC26B665D60011740B /* Tourney-Italic.ttf */; };
+		41F44BE026B665E80011740B /* PressStart2P-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 41F44BDF26B665E80011740B /* PressStart2P-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +74,9 @@
 		41F44BD326B280470011740B /* SLCursor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCursor.swift; sourceTree = "<group>"; };
 		41F44BD526B439C00011740B /* SLGameContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLGameContext.swift; sourceTree = "<group>"; };
 		41F44BD726B4AA750011740B /* SLStartScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLStartScreen.swift; sourceTree = "<group>"; };
+		41F44BDB26B665D60011740B /* Tourney.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Tourney.ttf; sourceTree = "<group>"; };
+		41F44BDC26B665D60011740B /* Tourney-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tourney-Italic.ttf"; sourceTree = "<group>"; };
+		41F44BDF26B665E80011740B /* PressStart2P-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "PressStart2P-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +127,7 @@
 		41F44B8A26B157A70011740B /* Cheese */ = {
 			isa = PBXGroup;
 			children = (
+				41F44BDA26B665870011740B /* Fonts */,
 				41F44BD926B646330011740B /* ViewControllers */,
 				41F44BCC26B1D2980011740B /* Shaders */,
 				41F44BBF26B160640011740B /* Views */,
@@ -198,6 +205,16 @@
 				41F44B8F26B157A70011740B /* ViewController.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		41F44BDA26B665870011740B /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				41F44BDF26B665E80011740B /* PressStart2P-Regular.ttf */,
+				41F44BDC26B665D60011740B /* Tourney-Italic.ttf */,
+				41F44BDB26B665D60011740B /* Tourney.ttf */,
+			);
+			path = Fonts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -304,8 +321,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				41F44BE026B665E80011740B /* PressStart2P-Regular.ttf in Resources */,
+				41F44BDE26B665D60011740B /* Tourney-Italic.ttf in Resources */,
 				41F44B9826B157A80011740B /* LaunchScreen.storyboard in Resources */,
 				41F44B9526B157A80011740B /* Assets.xcassets in Resources */,
+				41F44BDD26B665D60011740B /* Tourney.ttf in Resources */,
 				41F44B9326B157A70011740B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

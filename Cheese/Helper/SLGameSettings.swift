@@ -10,10 +10,8 @@ import UIKit
 
 public class SLGameSettings: NSObject {
     
-//MARK: - Create a shared device object
     static let shared = SLGameSettings()
 
-//MARK: - Create Colors
     public static var canvasColor = UIColor.white
     
     public static var columnColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
@@ -32,8 +30,8 @@ public class SLGameSettings: NSObject {
     
     public static var defaultCoinColor = UIColor.white
     
-    public static var fontName = "Avenir Next Bold"
-    
+    public static var fontName = "TourneyRoman-Black"//"TourneyRoman-Bold"//"TourneyRoman-Black"//"Avenir Next Bold"
+    //"PressStart2P-Regular"//"TourneyRoman-Bold"//"TourneyRoman-Black"//"Avenir Next Bold"
     public static var fontColor = UIColor.black
     
     public static var lightPurpleColor = UIColor(red: 195/255, green: 189/255, blue: 232/255, alpha: 1)
@@ -43,6 +41,5 @@ public class SLGameSettings: NSObject {
     public static var columns = 7
     
     public static var rows = 6
-    
     
 }

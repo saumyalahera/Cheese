@@ -10,12 +10,19 @@ import Foundation
 class SLGameContext {
     
 //MARK: - Properties
+    
+/*Need to keep a check if the game has ended or not*/
+    var gameEnded = false
+    
 /*Create a move variable that keeps track if the move was complete or not*/
     var completedMove = false
+    
 /*Patter rule check*/
     let patternCount = 3
-/*Turn- This decides who playe first*/
+    
+/*Turn- This decides who plays first*/
    var playerOneTurn = true
+    
 /*Columns and Rows*/
     var rows:Float = 6
     var cols:Float = 7
@@ -23,6 +30,7 @@ class SLGameContext {
 /*Create players used to keep track of current score and other settings*/
     var playerOne:SLPlayer!
     var playerTwo:SLPlayer!
+    
 /*This is useful for p1 vs p2 game*/
     var currentPlayer:SLPlayer!
     
@@ -77,6 +85,7 @@ class SLGameContext {
     }
     
     func setupGameEssentials(columns: Int, rows:Int, gameType: SLGameType, firstPlayer: Bool, playerOne: SLPlayer, playerTwo: SLPlayer) {
+        self.gameEnded = false
         self.playerOne = playerOne
         self.playerTwo = playerTwo
         self.playerOneTurn = firstPlayer
@@ -90,9 +99,14 @@ class SLGameContext {
         self.resetColumns(columns: columns)
     }
     
-    func resetGame(columns: Int, rows:Int, gameType: SLGameType, firstPlayer: Bool, playerOne: SLPlayer, playerTwo: SLPlayer) {
+    /*func resetGame(columns: Int, rows:Int, gameType: SLGameType, firstPlayer: Bool, playerOne: SLPlayer, playerTwo: SLPlayer) {
         self.setupGameEssentials(columns: columns, rows: rows, gameType: gameType, firstPlayer: firstPlayer, playerOne: playerOne, playerTwo: playerTwo)
         self.resetCoins(columns: columns, rows: rows)
+    }*/
+    
+    func resetGame(gameType: SLGameType, firstPlayer: Bool, playerOne: SLPlayer, playerTwo: SLPlayer) {
+        self.setupGameEssentials(columns: Int(cols), rows: Int(rows), gameType: gameType, firstPlayer: firstPlayer, playerOne: playerOne, playerTwo: playerTwo)
+        self.resetCoins(columns: Int(cols), rows: Int(rows))
     }
     
 //MARK: - CPU Play
@@ -114,12 +128,12 @@ class SLGameContext {
 
         if self.horizontalCheck(x: x, y: y, maxCol: maxCol) || self.verticalCheck(x: x, y: y, maxRow: maxRow) || self.upDiagonalCheck(x: x, y: y) || self.downDiagonalCheck(x: x, y: y) {
             player.score+=1
-            //print("\(player.name) won! Player One: \(playerOne.score), Player Two: \(playerTwo.score)")
             return true
         }
         
         if(self.coinsCounter >= Int(self.rows*self.cols)) {
-            self.coinsCounter = 30
+            //SML
+            self.coinsCounter = -1//30
             return true
         }
         
@@ -160,7 +174,7 @@ class SLGameContext {
     
 /*Diagonal Check*/
     func upDiagonalCheck(x: Int, y:Int) -> Bool {
-            
+        print("UpDiagonal")
     //Get the coordinates
         let p1 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Left, yDirection: .Down)
         let p2 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Right, yDirection: .Up)
@@ -193,7 +207,7 @@ class SLGameContext {
 
 /*Check if horizontal check is valid or not*/
     func horizontalCheck(x: Int, y:Int, maxCol:Int) -> Bool{
-    
+        print("Horizontal")
     //Get Max and Min so that you decide the range you want to check in
         let minColumn = max(0, x-patternCount)
         let maxColumn = min(maxCol,x+patternCount)
@@ -212,6 +226,7 @@ class SLGameContext {
             guard let c1 = self.coins[ix][y]?.name, let c2 = self.coins[ix+1][y]?.name, let c3 = self.coins[ix+2][y]?.name, let c4 = self.coins[ix+3][y]?.name else {
                 continue
             }
+            print("I am here: \([c1,c2,c3,c4])")
             if Set([c1,c2,c3,c4]).count == 1 {
                 return true
             }
@@ -221,7 +236,7 @@ class SLGameContext {
     
 /*This is to check if it is vertical point or not*/
     func verticalCheck(x: Int, y:Int, maxRow:Int) -> Bool{
-        
+        print("Vertical")
     //Get Max and Min so that you decide the range you want to check in
         let minRow = max(0, y-patternCount)
         let maxRow = min(maxRow,y+patternCount)
@@ -239,6 +254,7 @@ class SLGameContext {
             guard let c1 = self.coins[x][iy]?.name, let c2 = self.coins[x][iy+1]?.name, let c3 = self.coins[x][iy+2]?.name, let c4 = self.coins[x][iy+3]?.name else {
                 continue
             }
+            print("I am here: \([c1,c2,c3,c4])")
             if Set([c1,c2,c3,c4]).count == 1 {
                 return true
             }
