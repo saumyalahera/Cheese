@@ -323,8 +323,6 @@ extension ViewController {
     
 }
 
-//MARK: - Touch Interactions
-/** This extension is used to keep track of cursor and it */
 extension ViewController {
     
 //MARK: - Touch Methods
