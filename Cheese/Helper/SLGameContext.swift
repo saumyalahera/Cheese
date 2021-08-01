@@ -174,7 +174,7 @@ class SLGameContext {
     
 /*Diagonal Check*/
     func upDiagonalCheck(x: Int, y:Int) -> Bool {
-        print("UpDiagonal")
+        
     //Get the coordinates
         let p1 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Left, yDirection: .Down)
         let p2 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Right, yDirection: .Up)
@@ -196,7 +196,7 @@ class SLGameContext {
             guard let c1 = self.coins[ix][iy]?.name, let c2 = self.coins[ix+1][iy+1]?.name, let c3 = self.coins[ix+2][iy+2]?.name, let c4 = self.coins[ix+3][iy+3]?.name else {
                 continue
              }
-            print("I am here: \([c1,c2,c3,c4])")
+            
             if Set([c1,c2,c3,c4]).count == 1 {
                 return true
             }
@@ -207,7 +207,7 @@ class SLGameContext {
 
 /*Check if horizontal check is valid or not*/
     func horizontalCheck(x: Int, y:Int, maxCol:Int) -> Bool{
-        print("Horizontal")
+        
     //Get Max and Min so that you decide the range you want to check in
         let minColumn = max(0, x-patternCount)
         let maxColumn = min(maxCol,x+patternCount)
@@ -226,7 +226,7 @@ class SLGameContext {
             guard let c1 = self.coins[ix][y]?.name, let c2 = self.coins[ix+1][y]?.name, let c3 = self.coins[ix+2][y]?.name, let c4 = self.coins[ix+3][y]?.name else {
                 continue
             }
-            print("I am here: \([c1,c2,c3,c4])")
+            
             if Set([c1,c2,c3,c4]).count == 1 {
                 return true
             }
@@ -236,7 +236,7 @@ class SLGameContext {
     
 /*This is to check if it is vertical point or not*/
     func verticalCheck(x: Int, y:Int, maxRow:Int) -> Bool{
-        print("Vertical")
+       
     //Get Max and Min so that you decide the range you want to check in
         let minRow = max(0, y-patternCount)
         let maxRow = min(maxRow,y+patternCount)
@@ -254,7 +254,7 @@ class SLGameContext {
             guard let c1 = self.coins[x][iy]?.name, let c2 = self.coins[x][iy+1]?.name, let c3 = self.coins[x][iy+2]?.name, let c4 = self.coins[x][iy+3]?.name else {
                 continue
             }
-            print("I am here: \([c1,c2,c3,c4])")
+            
             if Set([c1,c2,c3,c4]).count == 1 {
                 return true
             }
