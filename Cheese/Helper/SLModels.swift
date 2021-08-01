@@ -8,6 +8,7 @@
 import simd
 import UIKit
 
+//MARK: - Structs
 /**It is used to render color on shapes by passing vertex bytes**/
 struct SLShapeColorConstant {
     var color:simd_float4
@@ -26,23 +27,7 @@ struct SLCanvasInfo {
     var height:Float
 }
 
-public enum SLPlayerType {
-    case Player
-    case CPU
-}
-
-public enum SLGameType {
-    case SinglePlayer
-    case TwoPlayer
-}
-
-public enum SLDiagonalDirection {
-    case Right
-    case Left
-    case Up
-    case Down
-}
-
+//MARK: - Class
 /**This is the main logic where you only calculate horizontal, vertical and diagonal count*/
 class SLPlayer {
     var name: String!
@@ -62,10 +47,26 @@ class SLUserInterfaceContext {
     var outerPadding:Float = 5
     var innerPadding:Float = 3
     var blockDimension:Float = 0
-    
     /*This is used for animations, when a player taps, drags columns, they should animate.*/
     var columnWidth:Float = 0
     var columnHeight:Float = 0
-    
+}
+
+//MARK: - Enums
+public enum SLPlayerType {
+    case Player
+    case CPU
+}
+
+public enum SLGameType {
+    case SinglePlayer
+    case TwoPlayer
+}
+
+public enum SLDiagonalDirection {
+    case Right
+    case Left
+    case Up
+    case Down
 }
 

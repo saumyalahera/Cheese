@@ -10,10 +10,8 @@ import UIKit
 
 public class SLGameSettings: NSObject {
     
-//MARK: - Create a shared device object
     static let shared = SLGameSettings()
 
-//MARK: - Create Colors
     public static var canvasColor = UIColor.white
     
     public static var columnColor = UIColor(red: 242/255, green: 242/255, blue: 242/255, alpha: 1)
@@ -43,6 +41,5 @@ public class SLGameSettings: NSObject {
     public static var columns = 7
     
     public static var rows = 6
-    
     
 }
