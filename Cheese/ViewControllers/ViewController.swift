@@ -42,7 +42,7 @@ class ViewController: UIViewController {
     var gameEnvironmentInitialsed = false
     
     ///Setup players
-    var player1 = SLPlayer(name: "player", color: SLGameSettings.playerOneCoinColor, score: 0)
+    var player1 = SLPlayer(name: "PLAYER", color: SLGameSettings.playerOneCoinColor, score: 0)
     var player2 = SLPlayer(name: "AI", color: SLGameSettings.playerTwoCoinColor, score: 0)
     
 //MARK: - View Controller Methods
@@ -125,8 +125,8 @@ extension ViewController {
         self.gameMenu.isHidden = true
     
     //Update score
-        self.player1Button.setTitle("\(self.player1.name ?? ""): \(self.player1.score ?? 0)", for: .normal)
-        self.player2Button.setTitle("\(self.player2.name ?? ""): \(self.player2.score ?? 0)", for: .normal)
+        //self.player1Button.setTitle("\(self.player1.name ?? ""): \(self.player1.score ?? 0)", for: .normal)
+        //self.player2Button.setTitle("\(self.player2.name ?? ""): \(self.player2.score ?? 0)", for: .normal)
     }
 }
 
@@ -459,6 +459,8 @@ extension ViewController {
             print(message)
             self.menuLabel.text = message
             coin.color = player.color
+            self.player1Button.setTitle("\(self.player1.name ?? ""): \(self.player1.score ?? 0)", for: .normal)
+            self.player2Button.setTitle("\(self.player2.name ?? ""): \(self.player2.score ?? 0)", for: .normal)
             
             self.gameMenu.isHidden = false
             return nil
