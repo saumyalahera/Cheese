@@ -205,7 +205,6 @@ extension ViewController {
                 canvas.addNode(shape: coin)
                 x+=(self.userInterfaceContext.innerPadding+self.userInterfaceContext.blockDimension)
                 self.gameContext.coins[col][row] = coin
-                //print("\(col),\(row)")
             }
             y-=(self.userInterfaceContext.innerPadding+self.userInterfaceContext.blockDimension)
         }
@@ -483,13 +482,13 @@ extension ViewController {
             if(self.gameContext.coinsCounter == -1) {
                 message = "IT IS A DRAW!!!"
             }
-            print(message)
+            
             self.menuLabel.text = message
             coin.color = player.color
             self.player1Button.setTitle("\(self.player1.name ?? ""): \(self.player1.score ?? 0)", for: .normal)
             self.player2Button.setTitle("\(self.player2.name ?? ""): \(self.player2.score ?? 0)", for: .normal)
             self.gameContext.gameEnded = true
-            //Print who won
+            
             self.inGameLabel.text = message
             
             //self.gameMenu.isHidden = false
