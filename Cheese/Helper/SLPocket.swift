@@ -2,7 +2,7 @@
 //  SLPocket.swift
 //  Cheese
 //
-//  Created by Saumya Lahera on 7/28/21.
+//  Created by Saumya Lahera on 7/29/21.
 //
 import Foundation
 import MetalKit
@@ -11,7 +11,7 @@ import UIKit
 /**This class holds important functions required to render shapes*/
 public class SLPocket {
     
-    //MARK: - Init Functions
+
     /**It inits a metal device object so that you can create other object without passing metal object as a parameter*/
     init() {
         //Init metal device
@@ -61,7 +61,7 @@ extension SLPocket {
 }
 
 
-//MARK: - Metal Device Functions - PF
+//MARK: - Metal Device Functions
 /**This extension is to work with metal device object*/
 extension SLPocket {
     /**Get a GPU instance. It is a class method and do not need to create
@@ -72,7 +72,7 @@ extension SLPocket {
     }
 }
 
-//MARK: - Metal Command Queue Functions - PF
+//MARK: - Metal Command Queue Functions
 /**This extension is to work with Metal Command Queue*/
 extension SLPocket {
     /**Creates command Queue and returns one
@@ -83,7 +83,7 @@ extension SLPocket {
     }
 }
 
-//MARK: - Render Pipeline Descriptor - PF
+//MARK: - Render Pipeline Descriptor
 /**This extension helps create a render pipeline descriptor needed for render pipeline state*/
 extension SLPocket {
     
@@ -142,7 +142,7 @@ extension SLPocket {
     }
 }
 
-//MARK: - Render Pipeline - PF
+//MARK: - Render Pipeline
 /**This extension helps create a render pipeline state*/
 extension SLPocket {
     
@@ -171,7 +171,7 @@ extension SLPocket {
     
 }
 
-//MARK: - Metal Buffer Functions - PF
+//MARK: - Metal Buffer Functions
 /**This extension is to work with metal buffer object*/
 extension SLPocket {
     
@@ -189,7 +189,7 @@ extension SLPocket {
     
 }
 
-//MARK: - Metal Library Functions - PF
+//MARK: - Metal Library Functions
 /**This extension has shader library functions required to attach to a render pipeline*/
 extension SLPocket {
     
@@ -222,7 +222,7 @@ extension SLPocket {
     }
 }
 
-//MARK: - Metal Color Functions - PF
+//MARK: - Metal Color Functions
 /**This extension has metal color functions*/
 extension SLPocket {
     
@@ -263,7 +263,7 @@ extension SLPocket {
     }
 }
 
-//MARK: - Normalise Coordinates - PF
+//MARK: - Normalise Coordinates
 /**This extension has coordinates normalise functions*/
 extension SLPocket {
     
@@ -319,7 +319,7 @@ extension SLPocket {
     
 }
 
-//MARK: - Metal Radians Functions - PF
+//MARK: - Metal Radians Functions
 /**This extension has metal radians functions*/
 extension SLPocket {
     
@@ -340,32 +340,36 @@ extension SLPocket {
     
 }
 
-//MARK: - AUutolayout Methods
+//MARK: - UI Elements
+/*This is going to hold label*/
+extension SLPocket {
+    class func getButton(title: String, background: UIColor, titleColor:UIColor, font: UIFont) -> UIButton{
+        let button = UIButton()
+        button.setTitle(title, for: .normal)
+        button.backgroundColor = background
+        button.setTitleColor(titleColor, for: .normal)
+        button.titleLabel?.font = font
+        return button
+    }
+    
+    class func getView(color: UIColor) -> UIView{
+        let view = UIView()
+        view.backgroundColor = color
+        return view
+    }
+    
+    class func getLabel(textColor:UIColor, font:UIFont) -> UILabel{
+        let label = UILabel()
+        label.font = font
+        label.textAlignment = .center
+        label.textColor = textColor
+        return label
+    }
+}
+
+//MARK: - Autolayout Methods
 /**This class is to add Autolayout constraints**/
 extension SLPocket {
-    
-    /*class func addConstraints(leading: CGFloat?, trailing: CGFloat?, top: CGFloat?, bottom: CGFloat?, height: CGFloat?, width: CGFloat?, heightMultiplier:CGFloat?, widthMultiplier:CGFloat?, centerX:CGFloat?, centerY:CGFloat?, view:UIView) {
-        guard let superview = view.superview else {
-            return
-        }
-        view.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            
-            if(leading != nil) {
-            view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading)
-            }
-            if let trailing = leading {
-               
-            }
-           
-            
-            view.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: leading),
-            view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing),
-            view.topAnchor.constraint(equalTo: superview.topAnchor, constant: top),
-            view.bottomAnchor.constraint(equalTo: superview.bottomAnchor, constant: bottom)
-        ])
-    }*/
     
 /**This is used to make **/
    class func addConstraints(leading:CGFloat, trailing:CGFloat, top:CGFloat, bottom:CGFloat, view:UIView) {
@@ -467,33 +471,6 @@ extension SLPocket {
             view.trailingAnchor.constraint(equalTo: superview.trailingAnchor, constant: trailing)
          ])
      }
-}
-
-//MARK: - UI Elements
-/*This is going to hold label*/
-extension SLPocket {
-    class func getButton(title: String, background: UIColor, titleColor:UIColor, font: UIFont) -> UIButton{
-        let button = UIButton()
-        button.setTitle(title, for: .normal)
-        button.backgroundColor = background
-        button.setTitleColor(titleColor, for: .normal)
-        button.titleLabel?.font = font
-        return button
-    }
-    
-    class func getView(color: UIColor) -> UIView{
-        let view = UIView()
-        view.backgroundColor = color
-        return view
-    }
-    
-    class func getLabel(textColor:UIColor, font:UIFont) -> UILabel{
-        let label = UILabel()
-        label.font = font
-        label.textAlignment = .center
-        label.textColor = textColor
-        return label
-    }
 }
 
 

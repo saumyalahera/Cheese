@@ -19,10 +19,8 @@
 		41F44BBC26B15E4E0011740B /* SLTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BBB26B15E4E0011740B /* SLTools.swift */; };
 		41F44BC126B160740011740B /* SLCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BC026B160740011740B /* SLCanvas.swift */; };
 		41F44BC326B1BC010011740B /* SLShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BC226B1BC010011740B /* SLShape.swift */; };
-		41F44BC526B1BC550011740B /* SLNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BC426B1BC550011740B /* SLNode.swift */; };
 		41F44BC726B1BD6C0011740B /* SLModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BC626B1BD6C0011740B /* SLModels.swift */; };
 		41F44BC926B1BF420011740B /* SLCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BC826B1BF420011740B /* SLCircle.swift */; };
-		41F44BCB26B1C43D0011740B /* SLProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BCA26B1C43D0011740B /* SLProtocols.swift */; };
 		41F44BCE26B1D2B10011740B /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BCD26B1D2B10011740B /* Shaders.metal */; };
 		41F44BD026B1FE7A0011740B /* SLSquare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BCF26B1FE7A0011740B /* SLSquare.swift */; };
 		41F44BD226B23D340011740B /* SLGameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41F44BD126B23D340011740B /* SLGameSettings.swift */; };
@@ -65,10 +63,8 @@
 		41F44BBB26B15E4E0011740B /* SLTools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLTools.swift; sourceTree = "<group>"; };
 		41F44BC026B160740011740B /* SLCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCanvas.swift; sourceTree = "<group>"; };
 		41F44BC226B1BC010011740B /* SLShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLShape.swift; sourceTree = "<group>"; };
-		41F44BC426B1BC550011740B /* SLNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLNode.swift; sourceTree = "<group>"; };
 		41F44BC626B1BD6C0011740B /* SLModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLModels.swift; sourceTree = "<group>"; };
 		41F44BC826B1BF420011740B /* SLCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLCircle.swift; sourceTree = "<group>"; };
-		41F44BCA26B1C43D0011740B /* SLProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLProtocols.swift; sourceTree = "<group>"; };
 		41F44BCD26B1D2B10011740B /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		41F44BCF26B1FE7A0011740B /* SLSquare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLSquare.swift; sourceTree = "<group>"; };
 		41F44BD126B23D340011740B /* SLGameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SLGameSettings.swift; sourceTree = "<group>"; };
@@ -125,13 +121,11 @@
 		41F44B8A26B157A70011740B /* Cheese */ = {
 			isa = PBXGroup;
 			children = (
+				41F44BD926B646330011740B /* ViewControllers */,
 				41F44BCC26B1D2980011740B /* Shaders */,
 				41F44BBF26B160640011740B /* Views */,
 				41F44BBE26B15F030011740B /* Shapes */,
 				41F44BBD26B15EDE0011740B /* Helper */,
-				41F44B8B26B157A70011740B /* AppDelegate.swift */,
-				41F44B8D26B157A70011740B /* SceneDelegate.swift */,
-				41F44B8F26B157A70011740B /* ViewController.swift */,
 				41F44B9126B157A70011740B /* Main.storyboard */,
 				41F44B9426B157A80011740B /* Assets.xcassets */,
 				41F44B9626B157A80011740B /* LaunchScreen.storyboard */,
@@ -159,7 +153,6 @@
 		41F44BBD26B15EDE0011740B /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				41F44BCA26B1C43D0011740B /* SLProtocols.swift */,
 				41F44BB926B1594E0011740B /* SLPocket.swift */,
 				41F44BBB26B15E4E0011740B /* SLTools.swift */,
 				41F44BC626B1BD6C0011740B /* SLModels.swift */,
@@ -173,7 +166,6 @@
 			isa = PBXGroup;
 			children = (
 				41F44BC226B1BC010011740B /* SLShape.swift */,
-				41F44BC426B1BC550011740B /* SLNode.swift */,
 				41F44BCF26B1FE7A0011740B /* SLSquare.swift */,
 				41F44BC826B1BF420011740B /* SLCircle.swift */,
 				41F44BD326B280470011740B /* SLCursor.swift */,
@@ -196,6 +188,16 @@
 				41F44BCD26B1D2B10011740B /* Shaders.metal */,
 			);
 			path = Shaders;
+			sourceTree = "<group>";
+		};
+		41F44BD926B646330011740B /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				41F44B8B26B157A70011740B /* AppDelegate.swift */,
+				41F44B8D26B157A70011740B /* SceneDelegate.swift */,
+				41F44B8F26B157A70011740B /* ViewController.swift */,
+			);
+			path = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -331,7 +333,6 @@
 			files = (
 				41F44BD426B280470011740B /* SLCursor.swift in Sources */,
 				41F44BCE26B1D2B10011740B /* Shaders.metal in Sources */,
-				41F44BCB26B1C43D0011740B /* SLProtocols.swift in Sources */,
 				41F44BD026B1FE7A0011740B /* SLSquare.swift in Sources */,
 				41F44BC926B1BF420011740B /* SLCircle.swift in Sources */,
 				41F44BBC26B15E4E0011740B /* SLTools.swift in Sources */,
@@ -341,7 +342,6 @@
 				41F44BC126B160740011740B /* SLCanvas.swift in Sources */,
 				41F44BC326B1BC010011740B /* SLShape.swift in Sources */,
 				41F44BD226B23D340011740B /* SLGameSettings.swift in Sources */,
-				41F44BC526B1BC550011740B /* SLNode.swift in Sources */,
 				41F44BD626B439C00011740B /* SLGameContext.swift in Sources */,
 				41F44B8C26B157A70011740B /* AppDelegate.swift in Sources */,
 				41F44BBA26B1594E0011740B /* SLPocket.swift in Sources */,

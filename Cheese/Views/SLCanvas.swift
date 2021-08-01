@@ -2,19 +2,10 @@
 //  SLCanvas.swift
 //  Cheese
 //
-//  Created by Saumya Lahera on 7/28/21.
+//  Created by Saumya Lahera on 7/29/21.
 //
 import UIKit
 import MetalKit
-
-//var frameTimer:Float = 0
-
-/*Optimisations:
- 1. Need to make sure that only used pipelines are instantiated
- 2. */
-
-//This is used to set color
-
 
 
 class SLCanvas: MTKView {

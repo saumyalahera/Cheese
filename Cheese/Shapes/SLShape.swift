@@ -2,14 +2,14 @@
 //  SLShape.swift
 //  Cheese
 //
-//  Created by Saumya Lahera on 7/28/21.
+//  Created by Saumya Lahera on 7/29/21.
 //
 
 import Foundation
 import UIKit
 import MetalKit
 
-class SLShape: SLNode {
+class SLShape {
    
 //MARK: - Properties
     /*It is super important because when you make changes to any of the x,y,width or height values, it should ne normalised and for that you need the frame size. Canvas that subviews the square object is the super object and we need that frame*/

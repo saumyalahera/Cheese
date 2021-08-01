@@ -9,7 +9,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-//MARK: - Cursor and Column blocks Properties
+//MARK: - Properties
     
     ///Create UI elements
     var gameMenu:UIView!
@@ -267,7 +267,6 @@ extension ViewController {
     
     func createCanvasBlocks() {
         
-    
         //self.screenWidth = Float(self.view.frame.width)
     //Calculate block width
         self.userInterfaceContext.columnWidth = self.canvasInfo.width - (2*self.userInterfaceContext.outerPadding)
@@ -325,10 +324,11 @@ extension ViewController {
     
 }
 
-//MARK: - Cursor Extension
+//MARK: - Touch Interactions
 /** This extension is used to keep track of cursor and it */
 extension ViewController {
     
+//MARK: - Touch Methods
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard self.gameMenu.isHidden else{
             return
@@ -410,7 +410,7 @@ extension ViewController {
             }
         }
     }
-    
+//MARK: - Play Function
     @discardableResult func updatePlay(column:Int, player:SLPlayer) -> Bool?{
         
         self.gameContext.completedMove = false

@@ -127,53 +127,11 @@ class SLGameContext {
     
 //MARK: - Directional Check
     
-    func getDiagonalXYWithDirections(X: Int, Y:Int, xDirection: SLDiagonalDirection, yDirection: SLDiagonalDirection) -> (x:Int, y:Int) {
-        
-    //This is for the left direction
-        var x = max(0,X-patternCount)
-        x = X - x
-        var xSign = -1
-        
-    //This is for the right direction
-        if(xDirection == .Right) {
-            x = min(X+patternCount,(Int(cols-1)))
-            x = x - X
-            xSign = 1
-        }
-        
-    //This is for up direction
-        var y = min(Y+patternCount,Int(rows-1))
-        y = y - Y
-        var ySign = 1
-        
-    //This is for down directions
-        if( yDirection == .Down) {
-            y = max((Y-patternCount),0)
-            y = Y - y
-            ySign = -1
-        }
-        
-        let k = min(x,y)
-        
-        return (X + (k*xSign),Y + (k*ySign))
-    }
-    
     func downDiagonalCheck(x: Int, y:Int) -> Bool {
+        
         //Get two points
-        var p1 = self.getDownMinCoin(X: x, Y: y)
-        var p2 = self.getDownMaxCoin(X: x, Y: y)
-        
-        print("DOWN")
-        print("\(p1), \(p2)")
-        
-        p1 = self.getDownMinCoinx(X: x, Y: y)
-        p2 = self.getDownMaxCoinx(X: x, Y: y)
-        print("\(p1), \(p2)")
-        
-        p1 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Left, yDirection: .Up)
-        p2 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Right, yDirection: .Down)
-        print("\(p1), \(p2)")
-        
+        let p1 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Left, yDirection: .Up)
+        let p2 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Right, yDirection: .Down)
         
         var iterations = (p2.x - p1.x) - patternCount
         iterations+=2
@@ -190,7 +148,7 @@ class SLGameContext {
             guard let c1 = self.coins[ix][iy]?.name, let c2 = self.coins[ix+1][iy-1]?.name, let c3 = self.coins[ix+2][iy-2]?.name, let c4 = self.coins[ix+3][iy-3]?.name else {
                 continue
             }
-            print("I am here: \([c1,c2,c3,c4])")
+    
             if Set([c1,c2,c3,c4]).count == 1 {
                 return true
             }
@@ -201,21 +159,9 @@ class SLGameContext {
 /*Diagonal Check*/
     func upDiagonalCheck(x: Int, y:Int) -> Bool {
             
-    //Get two points
-        var p1 = self.getUpMinCoin(X: x, Y: y)
-        var p2 = self.getUpMaxCoin(X: x, Y: y)
-        print("UP")
-        print("\(p1), \(p2)")
-        
-        p1 = self.getUpMinCoinx(X: x, Y: y)
-        p2 = self.getUpMaxCoinx(X: x, Y: y)
-        print("\(p1), \(p2)")
-        
-        p1 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Left, yDirection: .Down) //self.getUpMinCoin(X: x, Y: y)
-        p2 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Right, yDirection: .Up) //self.getUpMaxCoin(X: x, Y: y)
-        print("\(p1), \(p2)")
-        
-        
+    //Get the coordinates
+        let p1 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Left, yDirection: .Down)
+        let p2 = self.getDiagonalXYWithDirections(X: x, Y: y, xDirection: .Right, yDirection: .Up)
         
     //Calculates number of passes needed
         var iterations = (p2.x - p1.x) - patternCount
@@ -298,119 +244,39 @@ class SLGameContext {
         return false
     }
     
-//MARK: - Diagonal Points Checks
-
-//MARK: - NEW LOGIC
+//MARK: - Diagonal Min and Max Finder
     
-    
-    
-/*This will return the first/min diagonal coin*/
-        func getUpMinCoin(X: Int, Y:Int) -> (x:Int, y:Int){
-            
-            let x = min((X-0),(X-patternCount))
-            let y = max((Y-patternCount),(Y-0))
-            
-            let k = min(x,y)
-            
-            return (X - k, Y - k)
+    func getDiagonalXYWithDirections(X: Int, Y:Int, xDirection: SLDiagonalDirection, yDirection: SLDiagonalDirection) -> (x:Int, y:Int) {
+        
+    //This is for the left direction
+        var x = max(0,X-patternCount)
+        x = X - x
+        var xSign = -1
+        
+    //This is for the right direction
+        if(xDirection == .Right) {
+            x = min(X+patternCount,(Int(cols-1)))
+            x = x - X
+            xSign = 1
         }
         
-    /*This will return the last/max diagonal coin*/
-        func getUpMaxCoin(X: Int, Y:Int) -> (x:Int, y:Int){
-            
-            let x = min((X+patternCount),(Int(cols-1)-X))
-            let y = max((Y+patternCount),(Int(rows-1)-Y))
-            
-            let k = min(x,y)
-            
-            return (X + k, Y + k)
-        }
-    /*This function is to get maxcoin from left*/
-        func getDownMinCoin(X: Int, Y:Int) -> (x: Int, y:Int) {
-            
-            let x = max((X-0),(X-patternCount))
-            let y = min((Y+patternCount),(Int(rows-1)-Y))
-            
-            let k = min(x,y)
-            
-            return (X - k, Y + k)
-            
+    //This is for up direction
+        var y = min(Y+patternCount,Int(rows-1))
+        y = y - Y
+        var ySign = 1
+        
+    //This is for down directions
+        if( yDirection == .Down) {
+            y = max((Y-patternCount),0)
+            y = Y - y
+            ySign = -1
         }
         
-        func getDownMaxCoin(X: Int, Y:Int) -> (x: Int, y:Int)  {
-            
-            let x = min((X+patternCount),(Int(cols-1)-X))
-            let y = max((Y-patternCount),(Y-0))
-            
-            let k = min(x,y)
-            
-            return (X + k, Y - k)
-            
-        }
+        let k = min(x,y)
+        
+        return (X + (k*xSign),Y + (k*ySign))
+    }
     
-    /*
-     
-     */
-    
-//MARK: - PERFECT
-    /*This will return the first/min diagonal coin*/
-        func getUpMinCoinx(X: Int, Y:Int) -> (x:Int, y:Int){
-            
-            var x = X - patternCount
-            var y = Y - patternCount
-            
-            var k = min(x,y)
-            
-            k = (k < 0) ? abs(k) : 0
-            
-            x = k + x
-            y = k + y
-            
-            return (x,y)
-        }
-        
-    /*This will return the last/max diagonal coin*/
-        func getUpMaxCoinx(X: Int, Y:Int) -> (x:Int, y:Int){
-            
-            var x = X + patternCount
-            var y = Y + patternCount
-            
-            var k = max(x,y)
-            
-            k = (k > Int(cols-1)) ? Int(cols-1) - k : 0
-            
-            x = k + x
-            y = k + y
-            
-            return (x,y)
-        }
-    /*This function is to get maxcoin from left*/
-        func getDownMinCoinx(X: Int, Y:Int) -> (x: Int, y:Int) {
-            
-        /*The logic is to get the minimum distant element and add/subtract with x and y coordinate*/
-            let x = max(X - 0, X - patternCount)
-            let y = min((Int(rows-1)-Y),Y + patternCount)
-            
-            let xk = min(x,y)
-            
-            return (X-xk,Y+xk)
-            
-        }
-        
-        func getDownMaxCoinx(X: Int, Y:Int) -> (x: Int, y:Int)  {
-            
-        /*The logic is to get the minimum distant element and add/subtract with x and y coordinate*/
-            let x = min((Int(cols-1)-X),X + patternCount)
-            let y = max(Y - 0, Y - patternCount)
-            
-            let xk = min(x,y)
-            
-            return (X+xk,Y-xk)
-            
-        }
-        
-    
-        
 }
 
 
